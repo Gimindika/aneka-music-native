@@ -11,7 +11,7 @@ class SearchBar extends Component {
     this.setState(() => ({ [name]: value }));
   }
   
-  search = (name) => {
+  search = () => {
     this.props.navigation.navigate('SearchResultScreen', {name:this.state.name});
   }
 
@@ -20,7 +20,7 @@ class SearchBar extends Component {
 
           <Item style={{width:'90%', alignSelf:'center'}}>
             <Input placeholder='Search item(s)' style={{ paddingLeft:15, fontSize:20, borderRadius:20, border:'black'}} onChangeText={(txt) => this.inputHandler("name", txt)}/>
-            <Icon active name='search' button onPress={() => this.search(name)} />
+            <Icon active name='search' button onPress={() => this.search()} />
           </Item>
 
     );

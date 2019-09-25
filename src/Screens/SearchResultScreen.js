@@ -11,21 +11,23 @@ import { getItemsByName } from '../public/redux/actions/items';
 import { Text } from 'native-base';
 
 class SearchResultScreen extends React.Component {
+  state={
+    name:''
+  }
   componentDidMount = async () => {
     const { navigation } = this.props;
     const name = navigation.getParam('name');
+    this.setState({name:name})
     console.log('navparamsearch', name);
     
     await this.props.dispatch(getItemsByName(name));
-    console.log('items', this.props.items);
-    
   }
 
   render(){
     return (
         <Fragment>
             <HeaderComponent/>
-            <Text>{'Search result for keyword : '+ name}</Text>
+            <Text>{'Search result for keyword : '+ this.state.name}</Text>
             <ItemList items={this.props.items}/>
 
             <FooterComponent/>

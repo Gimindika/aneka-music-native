@@ -9,6 +9,7 @@ import { withNavigation } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage'
 // import {AsyncStorage} from 'react-native';
 import { login } from '../public/redux/actions/user';
+import {getWishlist} from '../public/redux/actions/wishlist';
 
 import { connect } from 'react-redux';
 
@@ -89,7 +90,9 @@ class LoginScreen extends React.Component {
         });
         // console.log('state', this.state);
         
-       alert ('Welcome ' + this.state.user.name)
+        alert ('Welcome ' + this.state.user.name)
+        const header = {headers:{'authorization':'Bearer '+this.state.token}};
+        await this.props.dispatch(getWishlist(this.state.user.id, header))
         this.props.navigation.navigate('CategoryScreen');
       }
     } else {

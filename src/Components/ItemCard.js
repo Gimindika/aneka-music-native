@@ -1,8 +1,25 @@
 import React, { Component, Fragment } from "react";
 import {Image, Dimensions} from 'react-native';
 import {  Card, CardItem, Text, Body, Icon, Left, Right } from "native-base";
+import { connect } from 'react-redux';
 
-export default class ItemCard extends Component {
+
+ class ItemCard extends Component {
+  state = {
+    isWishlisted:false
+  }
+  componentDidMount = () => {
+    this.props.wishlist ?
+      this.props.wishlist.map(item => {
+        console.log('w',item.id);
+        console.log('i',this.props.item.id);
+        if(item.id == this.props.item.id){
+          this.setState({isWishlisted:true})
+        }
+      })
+    : null;
+  }
+
   render(props) {
     const  {height, width} = Dimensions.get('window');
     return (
@@ -37,9 +54,15 @@ export default class ItemCard extends Component {
 
               <Right style={{flex:2, flexWrap:"nowrap"}}>
                 <Body>
-                    <CardItem style={{paddingBottom:0, paddingTop:0}} button onPress={() => alert("This is Wishlist")}>
-                        <Icon name="heart" style={{ paddingTop:0, color:'red'}}/>
-                     </CardItem>
+                    {this.state.isWishlisted ? 
+                      <CardItem style={{paddingBottom:0, paddingTop:0}} button onPress={() => alert("This is Wishlisted")}>
+                          <Icon name="heart" style={{ paddingTop:0, color:'red'}}/>
+                      </CardItem>
+                      :
+                      <CardItem style={{paddingBottom:0, paddingTop:0}} button onPress={() => alert("This is not Wishlisted")}>
+                          <Icon name="heart" style={{ paddingTop:0, color:'grey'}}/>
+                      </CardItem>
+                    }
                     
                     {this.props.isCart ?
                         (
@@ -66,3 +89,12 @@ export default class ItemCard extends Component {
     );
   }
 }
+
+function mapStateToProps(state){
+  return{
+      wishlist: state.wishlist.wishlist
+  }
+}
+
+export default connect(mapStateToProps)(ItemCard);
+// export default ItemCard;
