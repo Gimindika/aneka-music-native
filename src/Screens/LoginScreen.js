@@ -6,9 +6,9 @@ import { Container, Content, Item } from 'native-base';
 import HeaderComponent  from '../Components/HeaderComponent';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
-import {AsyncStorage} from 'react-native';
-import { userLogin } from '../public/redux/actions/user';
-import { getCategories } from '../public/redux/actions/categories';
+import AsyncStorage from '@react-native-community/async-storage'
+// import {AsyncStorage} from 'react-native';
+import { login } from '../public/redux/actions/user';
 
 import { connect } from 'react-redux';
 
@@ -16,7 +16,14 @@ import { connect } from 'react-redux';
 class LoginScreen extends React.Component {
   state={
     email:'',
-    password:''
+    password:'',
+
+    user:{
+      id:'',
+      name:'',
+      email:'',
+    },
+    token:''
   }
 
   toRegister = () => {
@@ -27,27 +34,64 @@ class LoginScreen extends React.Component {
     this.setState(() => ({ [name]: value }));
   }
 
-  // login = async () => {
-   
-  //   await this.setState({
-  //     email:this.state.email,
-  //     password:this.state.password
-  //   })
-
-  //   await this.props.dispatch(login(this.state));
-
-  //   if(this.props.user == null){
-  //     alert('Wrong email or password!')
-  //   } else {
-  //     AsyncStorage.setItem('userName', this.props.user.name)
-  //     AsyncStorage.setItem('userID', this.props.user.id)
-  //     AsyncStorage.setItem('userEmail', this.props.user.email)
-  //     AsyncStorage.setItem('token', this.props.token)
-
-  //     alert('Welcome ' + this.props.user.name);
-  //     this.props.navigation.navigate('CategoryScreen');
+  // static async getItem(key) {
+  //   try {
+  //       return await AsyncStorage.getItem(key);
+  //   } catch (error) {
+  //       console.log("Error saving data" + error);
+  //       return null
   //   }
-  // } 
+  // }
+
+  login = async () => {
+   
+    await this.setState({
+      email:this.state.email,
+      password:this.state.password
+    })
+
+    await this.props.dispatch(login(this.state));
+
+    if(this.props.user == null){
+      alert('Wrong email or password!')
+    } else {
+     
+      AsyncStorage.setItem('userName',this.props.user.name)
+      AsyncStorage.setItem('id', this.props.user.id.toString())
+      AsyncStorage.setItem('userEmail', this.props.user.email)
+      AsyncStorage.setItem('token', this.props.token)
+
+      await AsyncStorage.getItem('userName').then((value) => {
+        if (value !== null) {
+          this.setState({user:{...this.state.user, name:value}})
+        }
+      });
+
+      await AsyncStorage.getItem('id').then((value) => {
+        value = parseInt(value);
+        console.log(value);
+        if (value !== null) {
+          this.setState({user:{...this.state.user, id:value}})
+        }
+      });
+
+      await AsyncStorage.getItem('userEmail').then((value) => {
+        if (value !== null) {
+          this.setState({user:{...this.state.user, email:value}})
+        }
+      });
+
+      await AsyncStorage.getItem('token').then((value) => {
+        if (value !== null) {
+          this.setState({token:value})
+        }
+      });
+      console.log('state', this.state);
+      
+     alert ('Welcome ' + this.state.user.name)
+      this.props.navigation.navigate('CategoryScreen');
+    }
+  } 
 
   render(){
     return (
@@ -100,5 +144,5 @@ function mapStateToProps(state){
   }
 }
 
-// export default withNavigation(connect(mapStateToProps)(LoginScreen));
-export default withNavigation(LoginScreen);
+export default withNavigation(connect(mapStateToProps)(LoginScreen));
+// export default withNavigation(LoginScreen);
