@@ -45,51 +45,55 @@ class LoginScreen extends React.Component {
 
   login = async () => {
    
-    await this.setState({
-      email:this.state.email,
-      password:this.state.password
-    })
+    // await this.setState({
+    //   email:this.state.email,
+    //   password:this.state.password
+    // })
+    if(this.state.email != '' && this.state.password != ''){
 
-    await this.props.dispatch(login(this.state));
-
-    if(this.props.user == null){
-      alert('Wrong email or password!')
+      await this.props.dispatch(login(this.state));
+  
+      if(this.props.user == null){
+        alert('Wrong email or password!')
+      } else {
+       
+        AsyncStorage.setItem('userName',this.props.user.name)
+        AsyncStorage.setItem('id', this.props.user.id.toString())
+        AsyncStorage.setItem('userEmail', this.props.user.email)
+        AsyncStorage.setItem('token', this.props.token)
+  
+        await AsyncStorage.getItem('userName').then((value) => {
+          if (value !== null) {
+            this.setState({user:{...this.state.user, name:value}})
+          }
+        });
+  
+        await AsyncStorage.getItem('id').then((value) => {
+          value = parseInt(value);
+          // console.log(value);
+          if (value !== null) {
+            this.setState({user:{...this.state.user, id:value}})
+          }
+        });
+  
+        await AsyncStorage.getItem('userEmail').then((value) => {
+          if (value !== null) {
+            this.setState({user:{...this.state.user, email:value}})
+          }
+        });
+  
+        await AsyncStorage.getItem('token').then((value) => {
+          if (value !== null) {
+            this.setState({token:value})
+          }
+        });
+        // console.log('state', this.state);
+        
+       alert ('Welcome ' + this.state.user.name)
+        this.props.navigation.navigate('CategoryScreen');
+      }
     } else {
-     
-      AsyncStorage.setItem('userName',this.props.user.name)
-      AsyncStorage.setItem('id', this.props.user.id.toString())
-      AsyncStorage.setItem('userEmail', this.props.user.email)
-      AsyncStorage.setItem('token', this.props.token)
-
-      await AsyncStorage.getItem('userName').then((value) => {
-        if (value !== null) {
-          this.setState({user:{...this.state.user, name:value}})
-        }
-      });
-
-      await AsyncStorage.getItem('id').then((value) => {
-        value = parseInt(value);
-        // console.log(value);
-        if (value !== null) {
-          this.setState({user:{...this.state.user, id:value}})
-        }
-      });
-
-      await AsyncStorage.getItem('userEmail').then((value) => {
-        if (value !== null) {
-          this.setState({user:{...this.state.user, email:value}})
-        }
-      });
-
-      await AsyncStorage.getItem('token').then((value) => {
-        if (value !== null) {
-          this.setState({token:value})
-        }
-      });
-      // console.log('state', this.state);
-      
-     alert ('Welcome ' + this.state.user.name)
-      this.props.navigation.navigate('CategoryScreen');
+      alert('Email and password can\'t be empty');
     }
   } 
 

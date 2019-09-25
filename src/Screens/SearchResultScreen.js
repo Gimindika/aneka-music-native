@@ -7,17 +7,16 @@ import FooterComponent from '../Components/FooterComponent';
 import ItemList from './ItemList';
 
 import { connect } from 'react-redux';
-import { getItemsByCategory } from '../public/redux/actions/items';
-// import SearchBar from '../Components/SearchBar';
+import { getItemsByName } from '../public/redux/actions/items';
+import { Text } from 'native-base';
 
-
-class ItemListScreen extends React.Component {
+class SearchResultScreen extends React.Component {
   componentDidMount = async () => {
     const { navigation } = this.props;
-    const id = navigation.getParam('id');
-    console.log('navparam', id);
+    const name = navigation.getParam('name');
+    console.log('navparamsearch', name);
     
-    await this.props.dispatch(getItemsByCategory(id));
+    await this.props.dispatch(getItemsByName(name));
     console.log('items', this.props.items);
     
   }
@@ -26,8 +25,7 @@ class ItemListScreen extends React.Component {
     return (
         <Fragment>
             <HeaderComponent/>
-            {/* <SearchBar/> */}
-
+            <Text>{'Search result for keyword : '+ name}</Text>
             <ItemList items={this.props.items}/>
 
             <FooterComponent/>
@@ -43,5 +41,5 @@ function mapStateToProps(state){
   }
 }
 
-export default connect(mapStateToProps)(ItemListScreen);
-// export default ItemListScreen ;
+export default connect(mapStateToProps)(SearchResultScreen);
+// export default SearchResultScreen ;

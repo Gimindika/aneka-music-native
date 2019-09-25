@@ -11,11 +11,11 @@ export default class ItemCard extends Component {
             <CardItem style={{flex:10}}>
               <Left style ={{width:width, height:height/4-30, flex:4, paddingRight:0, paddingLeft:0}} >
                   <CardItem style ={{ paddingRight:0, paddingLeft:0}} button onPress={() => alert("This is Image")}>
-                    <Image source={{uri:this.props.item.image }} style ={{width:width/3, height:height/5,marginLeft:5, paddingLeft:0, borderColor:'black', resizeMode:"contain"}}/>
+                    <Image source={{uri:this.props.item.image }} style ={{width:width/3, height:height/5,marginLeft:0, paddingLeft:0, borderColor:'black', resizeMode:"contain"}}/>
                   </CardItem>
               </Left>
 
-              <Body style={{flex:8,marginLeft:10, padding:20, flexDirection:"column"}}>
+              <Body style={{flex:8,marginLeft:20, padding:20, flexDirection:"column"}}>
                   <CardItem style={{paddingBottom:10, paddingTop:0}}>
                   <Text>{this.props.item.name}</Text>
                   </CardItem>

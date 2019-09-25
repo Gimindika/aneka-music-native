@@ -8,6 +8,7 @@ import WishlistScreen from './Screens/WishlistScreen';
 import CartScreen from './Screens/CartScreen';
 import LoginScreen from './Screens/LoginScreen';
 import RegisterScreen from './Screens/RegisterScreen';
+import SearchResultScreen from './Screens/SearchResultScreen';
 
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -33,6 +34,9 @@ const Router = createStackNavigator({
   },
   RegisterScreen: {
     screen: RegisterScreen
+  },
+  SearchResultScreen: {
+    screen: SearchResultScreen
   }
 },
 {

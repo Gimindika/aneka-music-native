@@ -8,6 +8,8 @@ import CategoryList from './CategoryList';
 
 import { connect } from 'react-redux';
 import { getCategories } from '../public/redux/actions/categories';
+import SearchBar from '../Components/SearchBar';
+
 
 class CategoryScreen extends React.Component {
   componentDidMount =  async () => {
@@ -22,6 +24,8 @@ class CategoryScreen extends React.Component {
     return (
         <Fragment>
             <HeaderComponent/>
+              <SearchBar/>
+
               <CategoryList categories={this.props.categories} toItemList={ this.toItemList}/>        
             <FooterComponent/>
         </Fragment>

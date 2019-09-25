@@ -6,8 +6,6 @@ import { withNavigation } from 'react-navigation';
 import { logout } from '../public/redux/actions/user';
 import { connect } from 'react-redux';
 
-
-
 class LogoutButton extends Component {
 
   
