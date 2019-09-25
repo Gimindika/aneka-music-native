@@ -20,13 +20,13 @@ import AsyncStorage from '@react-native-community/async-storage'
 
   componentDidMount =  async () => {
     
-    await AsyncStorage.getItem('id').then((value) => {
-      value = parseInt(value);
-      console.log(value);
-      if (value !== null) {
-        this.setState({user:{...this.state.user, id:value}})
-      }
-    });
+  //   await AsyncStorage.getItem('id').then((value) => {
+  //     value = parseInt(value);
+  //     console.log(value);
+  //     if (value !== null) {
+  //       this.setState({user:{...this.state.user, id:value}})
+  //     }
+  //   });
     
   }
   
