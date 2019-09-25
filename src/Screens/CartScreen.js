@@ -43,7 +43,7 @@ class CartScreen extends React.Component {
   render(){
     return (
         <Fragment>
-            <HeaderComponent user='true' />
+            <HeaderComponent/>
             <Text>Cart</Text>
             <Cart items={dummy}/>
 

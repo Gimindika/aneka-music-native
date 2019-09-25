@@ -40,7 +40,7 @@ class ItemListScreen extends React.Component {
   render(){
     return (
         <Fragment>
-            <HeaderComponent user='true' />
+            <HeaderComponent/>
             <Text>Wishlist</Text>
             <Wishlist items={dummy}/>
 

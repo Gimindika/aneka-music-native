@@ -16,7 +16,7 @@ buttonHandler = () => {
   render(){
     return (
         <Fragment>
-            <HeaderComponent user='true' />
+            <HeaderComponent/>
             <Text>User</Text>
             <TransactionList/>
 

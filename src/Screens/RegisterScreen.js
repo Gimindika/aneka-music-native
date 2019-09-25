@@ -30,7 +30,7 @@ class RegisterScreen extends React.Component {
   render(){
     return (
         <Fragment>
-            <HeaderComponent user='true' />
+            <HeaderComponent/>
               <Container style={{flexDirection:"column", flex:1, alignItems:"center",justifyContent:"center"}}>
                     <Image style={{width:200, height:100, borderRadius:10, marginBottom:0}} source={require('../imgs/logo.png')}/>
 

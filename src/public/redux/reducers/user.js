@@ -34,6 +34,18 @@ const initialState = {
           token: action.payload.data.data.token
         };
 
+        //LOGOUT///////////////////////////////////////////////////
+      
+      case "LOGOUT":
+        return {
+          ...state,
+          isLoading: false,
+          isRejected: false,
+          isFullfiled: true,
+          user: {},
+          token: {}
+        };
+
         //REGISTER///////////////////////////////////////////////////
       case "REGISTER_PENDING":
         return {

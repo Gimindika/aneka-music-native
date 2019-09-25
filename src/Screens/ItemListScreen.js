@@ -23,7 +23,7 @@ class ItemListScreen extends React.Component {
   render(){
     return (
         <Fragment>
-            <HeaderComponent user='true' />
+            <HeaderComponent/>
 
             <ItemList items={this.props.items}/>
 

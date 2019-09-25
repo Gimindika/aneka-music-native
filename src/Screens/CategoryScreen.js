@@ -21,7 +21,7 @@ class CategoryScreen extends React.Component {
   render(){
     return (
         <Fragment>
-            <HeaderComponent user='true' />
+            <HeaderComponent/>
               <CategoryList categories={this.props.categories} toItemList={ this.toItemList}/>        
             <FooterComponent/>
         </Fragment>

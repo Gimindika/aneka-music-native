@@ -69,7 +69,7 @@ class LoginScreen extends React.Component {
 
       await AsyncStorage.getItem('id').then((value) => {
         value = parseInt(value);
-        console.log(value);
+        // console.log(value);
         if (value !== null) {
           this.setState({user:{...this.state.user, id:value}})
         }
@@ -86,7 +86,7 @@ class LoginScreen extends React.Component {
           this.setState({token:value})
         }
       });
-      console.log('state', this.state);
+      // console.log('state', this.state);
       
      alert ('Welcome ' + this.state.user.name)
       this.props.navigation.navigate('CategoryScreen');
