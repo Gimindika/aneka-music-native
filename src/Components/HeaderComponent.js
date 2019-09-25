@@ -12,35 +12,10 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 
  class HeaderComponent extends React.Component {
-  // state = {
-  //   user:{
-  //     id:''
-  //   }
-  // }
-
-  componentDidMount =  async () => {
-    
-  //   await AsyncStorage.getItem('id').then((value) => {
-  //     value = parseInt(value);
-  //     console.log(value);
-  //     if (value !== null) {
-  //       this.setState({user:{...this.state.user, id:value}})
-  //     }
-  //   });
-    
-  }
   
   toHome = () => {
-    console.log(this.state);
     this.props.navigation.navigate('CategoryScreen');
   }
-
-  // logout = () => {
-  //   alert('Logout Success')
-  //   this.setState({user:{...this.state.user, id:''}})
-  //   AsyncStorage.clear();
-  //   this.props.navigation.navigate('CategoryScreen');
-  // }
 
   render(){
     return (
@@ -54,13 +29,13 @@ import AsyncStorage from '@react-native-community/async-storage'
           </TouchableOpacity>
           <Right />
           {this.props.user.id ? 
-            // <TouchableOpacity  onPress={this.logout}>
+            
             <TouchableOpacity>
               <LogoutButton/>
             </TouchableOpacity>
             :
             <LoginButton/>
-            // <LogoutButton/>
+         
           }
         </Header>
     );
