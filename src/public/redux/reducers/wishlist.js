@@ -62,7 +62,7 @@ const initialState = {
           isRejected: false,
           isFullfiled: false
         };
-      case "DELETE_WISHLIST_REJECTED":
+      case "DELETE_WISHLIST_REJdataAfterDeleteECTED":
         return {
           ...state,
           isLoading: false,
@@ -76,6 +76,16 @@ const initialState = {
           isRejected: false,
           isFullfiled: true,
           wishlist:dataAfterDelete
+        };
+
+        
+        case "RESET_WISHLIST":                                             // eslint-disable-next-line
+        return {
+          ...state,
+          isLoading: false,
+          isRejected: false,
+          isFullfiled: true,
+          wishlist: []
         };
   
       default:

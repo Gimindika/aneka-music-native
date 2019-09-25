@@ -4,45 +4,50 @@ import React, {Fragment} from 'react';
 import {Text} from 'react-native';
 import HeaderComponent  from '../Components/HeaderComponent';
 import FooterComponent from '../Components/FooterComponent';
+import {getWishlist} from '../public/redux/actions/wishlist';
+import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage'
+
+
 
 import Wishlist from './Wishlist';
 
-
-const dummy = [
-  {
-    name:'wishlist',
-    image:'https://d1aeri3ty3izns.cloudfront.net/media/25/253487/600/preview.jpg',
-    branch:'balikgitar',
-    price:20000
-  },
-  {
-    name:'batu',
-    image:'https://d1aeri3ty3izns.cloudfront.net/media/30/303944/600/preview_1.jpg',
-    branch:'balikbatu',
-    price:20400
-  },
-  {
-    name:'kayu',
-    image:'https://d1aeri3ty3izns.cloudfront.net/media/25/253487/600/preview.jpg',
-    branch:'balikkayu',
-    price:10000
-  },
-  {
-    name:'bola',
-    image:'https://d1aeri3ty3izns.cloudfront.net/media/25/253487/600/preview.jpg',
-    branch:'balikbola',
-    price:23000
+class WishlistScreen extends React.Component {
+  state = {
+    user:{
+      id:''
+    },
+    token:''
   }
-]
 
-class ItemListScreen extends React.Component {
+  componentDidMount = async () => {
+    await AsyncStorage.getItem('token').then((value) => {
+      if (value !== null) {
+        this.setState({token:value})
+      }
+    });
+
+    await AsyncStorage.getItem('id').then((value) => {
+      value = parseInt(value);
+      if (value !== null) {
+        this.setState({user:{...this.state.user, id:value}})
+      }
+    });
+    console.log('state',this.state);
+
+    const header = {headers:{'authorization':'Bearer '+this.state.token}};
+
+    await this.props.dispatch(getWishlist(this.state.user.id, header))
+    console.log('wish',this.props.wishlist);
+    
+  }
 
   render(){
     return (
         <Fragment>
             <HeaderComponent/>
             <Text>Wishlist</Text>
-            <Wishlist items={dummy}/>
+            <Wishlist whishlist={this.props.wishlist}/>
 
             <FooterComponent/>
         </Fragment>
@@ -51,4 +56,12 @@ class ItemListScreen extends React.Component {
   
 };
 
-export default ItemListScreen ;
+function mapStateToProps(state){
+  return{
+      user: state.user.user,
+      token: state.user.token,
+      wishlist: state.wishlist.wishlist
+  }
+}
+
+export default connect(mapStateToProps)(WishlistScreen);

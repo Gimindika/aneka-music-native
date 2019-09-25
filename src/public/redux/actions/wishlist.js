@@ -22,3 +22,9 @@ export const deleteWishlist = (user, item, header) => {
         payload: Axios.delete(`${url}/api/wishlist/${user}/${item}`, header)
     }
 }
+
+export const resetWishlist = () => {
+    return{
+        type: 'RESET_WISHLIST'
+    }
+}

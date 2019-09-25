@@ -4,6 +4,7 @@ import {  Button } from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage'
 import { withNavigation } from 'react-navigation';
 import { logout } from '../public/redux/actions/user';
+import { resetWishlist } from '../public/redux/actions/wishlist';
 import { connect } from 'react-redux';
 
 class LogoutButton extends Component {
@@ -12,6 +13,7 @@ class LogoutButton extends Component {
   logout = () => {
     AsyncStorage.clear();
     this.props.dispatch(logout());
+    this.props.dispatch(resetWishlist());
     this.props.navigation.navigate('CategoryScreen');
     alert('Logout Success')
   }
