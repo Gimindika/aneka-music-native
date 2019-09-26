@@ -4,9 +4,15 @@ import {ScrollView, View, Text} from 'react-native';
 
 import ItemCard from '../Components/ItemCard';
 import { connect } from 'react-redux';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { withNavigation } from 'react-navigation';
+
+
 
 class Wishlist extends React.Component {
- 
+  toItemDetails = (id) => {
+    this.props.navigation.navigate('ItemDetails', {id:id});
+  }
 
   render(){
     return (
@@ -18,7 +24,9 @@ class Wishlist extends React.Component {
             <React.Fragment>
               {this.props.whishlist.map((item,index) => {
                 return(
-                  <ItemCard item={item}  key={index}/>
+                  <TouchableOpacity key={index} onPress={() => this.toItemDetails(item.id)} >
+                    <ItemCard item={item}  />
+                  </TouchableOpacity>
                 )
               })}
             </React.Fragment>
@@ -38,4 +46,4 @@ function mapStateToProps(state){
   }
 }
 
-export default connect(mapStateToProps)(Wishlist);
+export default  withNavigation(connect(mapStateToProps)(Wishlist));

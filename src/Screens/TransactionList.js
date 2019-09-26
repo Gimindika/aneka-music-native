@@ -16,10 +16,10 @@ export default class TransactionList extends React.Component {
         <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
           
             
-                <TransactionCard/>
+                {/* <TransactionCard/>
               
                 <TransactionCard/>
-             
+              */}
             
         </View>
       </ScrollView>
