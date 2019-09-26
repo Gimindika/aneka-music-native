@@ -164,30 +164,37 @@ componentDidMount = async () => {
               </CardItem>
 
               <Text>Available at : </Text>
-              <CardItem style={{flexDirection:"column", justifyContent:"flex-start"}}>
+              <CardItem style={{flexDirection:"column", justifyContent:"flex-start", paddingLeft:0, paddingRight:0, marginLeft:0, marginRight:0}}>
             
                 {this.state.itemstock ? 
                   <Fragment >
-                        <Container style={{flex:3,paddingBottom:0, paddingLeft:0, marginLeft:0, width:width-50, justifyContent:"flex-start", flexDirection:"column", }}>
+
+                        <Container style={{flex:3,paddingBottom:0, paddingLeft:0, marginLeft:0, width:width-50, justifyContent:"flex-start", flexDirection:"row" , flexWrap:"wrap"}}>
 
                     {this.state.itemstock.map((item, index) => {
                       return(
-                        // <Container style={{flex:3,paddingBottom:0, width:width-50, justifyContent:"space-between", flexDirection:"row", borderWidth:1, borderColor:'black'}}>
-                        <CardItem style={{ width:width, height:50, paddingLeft:0, marginLeft:0,  justifyContent:"space-between", flexDirection:"row"}}>
                         
+                        <ScrollView >
+                        <CardItem key={index} style={{ justifyContent:"space-between", flexDirection:"column" }}>
                         
-                          <Text>{item.branch}</Text>
+                          <CardItem style={{alignSelf:'flex-start'}}>
+                            <Text >{item.branch} : </Text>
+                          </CardItem>
                          
-                          <Text>{item.quantity} unit(s)</Text>
-                          <Text>Rp.{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
-                          {this.state.user.level > 0 ? (
-                          <TouchableOpacity onPress={() => {this.addToCart(this.state.user.id, this.state.id, this.state.itemDetails.name, item.branchID, item.branch, item.price, 1)}}>
-                            <Text style={{color:'white', backgroundColor:'orange', borderRadius:10, padding:5}}>Add to Cart</Text>
-                          </TouchableOpacity>
-                          )
-                          :null}
+                          <CardItem style={{ alignItems:"flex-start",alignSelf:"flex-start", flexDirection:"row", marginLeft:0}}>
+                            
+                            <Text>{item.quantity} unit(s)</Text>
+                            <Text>Rp.{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
+                            {this.state.user.level > 0 ? (
+                            <TouchableOpacity onPress={() => {this.addToCart(this.state.user.id, this.state.id, this.state.itemDetails.name, item.branchID, item.branch, item.price, 1)}}>
+                              <Text style={{color:'white', backgroundColor:'orange', borderRadius:10, padding:5}}>Add to Cart</Text>
+                            </TouchableOpacity>
+                            )
+                            :null}
+                          </CardItem>
                         </CardItem>
-                        // </Container>
+                    </ScrollView>
+                      
                       )
                     })}
                     </Container>

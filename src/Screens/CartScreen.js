@@ -31,7 +31,6 @@ class CartScreen extends React.Component {
         },
         token:'',
         header:'',
-        total:0,
 
         receipt:false
     }
@@ -82,12 +81,11 @@ componentDidMount = async () => {
    //count total price/////////////////////////////////////////////////
    total = () => {
     let tot = 0;
-    this.state.cart.map(item => { // eslint-disable-line
+    this.props.cart.map(item => { // eslint-disable-line
         tot += (item.quantity * item.price)
     })
     
-    this.setState({total:tot})
-    return null
+    return tot;
   } 
 
   handleCheckout = async () => {
@@ -199,7 +197,7 @@ componentDidMount = async () => {
             </ScrollView>
             </React.Fragment>
 
-            <Text>Total : Rp. {this.state.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>            
+            <Text>Total : Rp. {this.total().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>            
             <TouchableOpacity>
                     <Text style={{color:'white', backgroundColor:'orange', textAlign:"center", textAlignVertical:"center", height:40}} onPress={() => this.handleCheckout()}  >Checkout</Text>
             </TouchableOpacity>
