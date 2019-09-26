@@ -148,6 +148,15 @@ const initialState = {
           isFullfiled: true,
           cart:[]
         };
+
+        case "RESET_CART":                                             // eslint-disable-next-line
+        return {
+          ...state,
+          isLoading: false,
+          isRejected: false,
+          isFullfiled: true,
+          cart: []
+        };
   
       default:
         return state;

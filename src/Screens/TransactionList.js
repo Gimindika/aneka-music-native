@@ -15,13 +15,11 @@ export default class TransactionList extends React.Component {
       <ScrollView style={{flex:1, }}>
         <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
           
-              <TouchableOpacity>
+            
                 <TransactionCard/>
-              </TouchableOpacity>
               
-              <TouchableOpacity>
                 <TransactionCard/>
-              </TouchableOpacity>
+             
             
         </View>
       </ScrollView>

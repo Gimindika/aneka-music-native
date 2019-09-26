@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, Text } from 'react-native';
 import {  Header,  Body, Right  } from 'native-base';
 
 import LoginButton from '../Elements/LoginButton';
@@ -12,6 +12,29 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 
  class HeaderComponent extends React.Component {
+  state={
+    user:{
+      id:'',
+      name:'',
+      email:'',
+    },
+    token:''
+  }
+
+  componentDidMount = async () => {
+    await AsyncStorage.getItem('id').then((value) => {
+      if (value !== null) {
+        value = parseInt(value);
+        this.setState({user:{...this.state.user, id:value}})
+      }
+    });
+  }
+
+  resetID = () => {
+    this.setState({user:{
+      id:null
+    }})
+  }
   
   toHome = () => {
     this.props.navigation.navigate('CategoryScreen');
@@ -28,13 +51,21 @@ import AsyncStorage from '@react-native-community/async-storage'
           {/* </Body> */}
           </TouchableOpacity>
           <Right />
-          {this.props.user.id ? 
+          {this.props.user.id  ? 
             
             <TouchableOpacity>
-              <LogoutButton/>
+              <LogoutButton resetID={this.resetID}/>
             </TouchableOpacity>
             :
-            <LoginButton/>
+            <React.Fragment>
+              {!this.state.user.id ? 
+                <LoginButton/>  
+                : 
+                <TouchableOpacity>
+                  <LogoutButton resetID={this.resetID}/>
+                </TouchableOpacity>
+            }
+            </React.Fragment>
          
           }
         </Header>

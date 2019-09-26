@@ -12,6 +12,15 @@ import SearchBar from '../Components/SearchBar';
 
 
 class CategoryScreen extends React.Component {
+  state={
+    user:{
+      id:'',
+      name:'',
+      email:'',
+    },
+    token:''
+  }
+
   componentDidMount =  async () => {
     await this.props.dispatch(getCategories());
   }

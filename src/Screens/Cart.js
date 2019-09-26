@@ -1,25 +1,45 @@
 
-import React from 'react';
-import {ScrollView, View} from 'react-native';
+// import React from 'react';
+// import {ScrollView, View, Text} from 'react-native';
 
-import ItemCard from '../Components/ItemCard';
-// import SearchBar from '../Components/SearchBar';
+// import ItemCard from '../Components/ItemCard';
+// import { connect } from 'react-redux';
 
-const Cart = (props) => {
-  return (
-    <React.Fragment>
-    {/* <SearchBar/> */}
-    <ScrollView style={{flex:1, }}>
-      <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-        {props.items.map((item,index) => {
-          return(
-            <ItemCard item={item} isCart='true' key={index}/>
-          )
-        })}
-      </View>
-    </ScrollView>
-    </React.Fragment>
-  );
-};
 
-export default Cart;
+// class Cart extends React.Component{
+
+//   render(){
+
+//     return (
+//       <React.Fragment>
+//       {/* <SearchBar/> */}
+//       <ScrollView style={{flex:1, }}>
+//         <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
+       
+//           {this.props.cart.length? 
+//           <React.Fragment>
+//             {this.props.cart.map((item,index) => {
+//               return(
+//                 <ItemCard item={item} isCart='true' key={index}/>
+//               )
+//             })}
+//           </React.Fragment>
+//           :   
+//           <Text>No item(s) in your cart</Text>
+//           }
+//         </View>
+//       </ScrollView>
+//       </React.Fragment>
+//     );
+//   }
+// };
+
+
+
+// function mapStateToProps(state){
+//   return{
+//       cart: state.cart.cart
+//   }
+// }
+
+// export default connect(mapStateToProps)(Cart);

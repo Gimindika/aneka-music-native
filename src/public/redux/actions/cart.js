@@ -36,3 +36,9 @@ export const clearCart = (id,header) => {
         payload: Axios.delete(`${url}/api/cart/clear/${id}`,header)
     }
 }
+
+export const resetCart = () => {
+    return{
+        type: 'RESET_CART'
+    }
+}

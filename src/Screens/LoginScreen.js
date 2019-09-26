@@ -10,6 +10,9 @@ import AsyncStorage from '@react-native-community/async-storage'
 // import {AsyncStorage} from 'react-native';
 import { login } from '../public/redux/actions/user';
 import {getWishlist} from '../public/redux/actions/wishlist';
+import {getCart} from '../public/redux/actions/cart';
+import {getUserTransactions} from '../public/redux/actions/transactions';
+
 
 import { connect } from 'react-redux';
 
@@ -70,9 +73,9 @@ class LoginScreen extends React.Component {
         });
   
         await AsyncStorage.getItem('id').then((value) => {
-          value = parseInt(value);
           // console.log(value);
           if (value !== null) {
+            value = parseInt(value);
             this.setState({user:{...this.state.user, id:value}})
           }
         });
@@ -92,7 +95,13 @@ class LoginScreen extends React.Component {
         
         alert ('Welcome ' + this.state.user.name)
         const header = {headers:{'authorization':'Bearer '+this.state.token}};
+
         await this.props.dispatch(getWishlist(this.state.user.id, header))
+        await this.props.dispatch(getCart(this.state.user.id, header))        
+       
+        await this.props.dispatch(getUserTransactions(this.state.user.id, header))
+
+
         this.props.navigation.navigate('CategoryScreen');
       }
     } else {
@@ -148,6 +157,7 @@ function mapStateToProps(state){
   return{
       user: state.user.user,
       token: state.user.token,
+      cart:state.cart.cart
   }
 }
 

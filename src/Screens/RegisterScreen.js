@@ -6,13 +6,18 @@ import { Container, Content, Item } from 'native-base';
 import HeaderComponent  from '../Components/HeaderComponent';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
+import { register } from '../public/redux/actions/user';
+import { connect } from 'react-redux';
+
+
 
 
 class RegisterScreen extends React.Component {
   state={
     name:'',
     email:'',
-    password:''
+    password:'',
+    register:{}
   }
 
   toLogin = () => {
@@ -23,8 +28,22 @@ class RegisterScreen extends React.Component {
     this.setState(() => ({ [name]: value }));
   }
 
-  register = () => {
-    console.log(this.state);
+  register = async () => {
+    const data = {
+      name:this.state.name,
+      email:this.state.email,
+      password:this.state.password
+    }
+
+    await this.props.dispatch(register(data));
+    this.setState({register:this.props.register})
+
+    if(this.state.register.error){
+      alert(this.state.register.error)
+    } else {
+      alert('Register success. \n Welcome to Aneka Music');
+      this.props.navigation.navigate('CategoryScreen');
+    }
   } 
 
   render(){
@@ -74,6 +93,10 @@ class RegisterScreen extends React.Component {
   
 };
 
+function mapStateToProps(state){
+  return{
+      register: state.user.register
+  }
+}
 
-export default withNavigation(RegisterScreen);
-
+export default connect(mapStateToProps)(RegisterScreen);
