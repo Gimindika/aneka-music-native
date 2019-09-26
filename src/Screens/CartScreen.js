@@ -10,6 +10,7 @@ import FooterComponent from '../Components/FooterComponent';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { getCart, editCart, deleteCart, clearCart } from '../public/redux/actions/cart';
+import { newTransaction } from '../public/redux/actions/transactions';
 import AsyncStorage from '@react-native-community/async-storage'
 
 
@@ -84,9 +85,34 @@ componentDidMount = async () => {
     this.state.cart.map(item => { // eslint-disable-line
         tot += (item.quantity * item.price)
     })
-  
-    return tot
+    
+    this.setState({total:tot})
+    return null
   } 
+
+  handleCheckout = async () => {
+    const tmp = [];
+    this.state.cart.map(cartitem => {
+        tmp.push({
+            item:cartitem.itemID,
+            branch:cartitem.branchID,
+            quantity:cartitem.quantity,
+            price:(cartitem.price * cartitem.quantity),
+            itemName: cartitem.item,
+            location: cartitem.branch
+        })
+        return null;
+    })
+    const data = {
+        transactionitems: [...tmp]
+    }
+
+   await this.props.dispatch(newTransaction(this.state.user.id, data, this.state.header));
+    alert('Transaction success \n Recorded in transaction history')
+    await this.setState({receipt:true})
+    await this.props.dispatch(clearCart(this.state.user.id, this.state.header));
+    this.setState({total:0});
+  }
 
   render(){
     const  {height, width} = Dimensions.get('window');
@@ -173,9 +199,9 @@ componentDidMount = async () => {
             </ScrollView>
             </React.Fragment>
 
-            <Text>Total : Rp. {this.total().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>            
+            <Text>Total : Rp. {this.state.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>            
             <TouchableOpacity>
-                    <Text style={{color:'white', backgroundColor:'orange', textAlign:"center", textAlignVertical:"center", height:40}} onPress={() => alert('checkout')}  >Checkout</Text>
+                    <Text style={{color:'white', backgroundColor:'orange', textAlign:"center", textAlignVertical:"center", height:40}} onPress={() => this.handleCheckout()}  >Checkout</Text>
             </TouchableOpacity>
 
             <FooterComponent/>
