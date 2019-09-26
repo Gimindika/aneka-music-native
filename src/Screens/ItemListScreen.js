@@ -15,10 +15,10 @@ class ItemListScreen extends React.Component {
   componentDidMount = async () => {
     const { navigation } = this.props;
     const id = navigation.getParam('id');
-    console.log('navparam', id);
+    // console.log('navparam', id);
     
     await this.props.dispatch(getItemsByCategory(id));
-    console.log('items', this.props.items);
+    // console.log('items', this.props.items);
     
   }
 

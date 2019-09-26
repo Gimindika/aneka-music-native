@@ -26,6 +26,7 @@ class LoginScreen extends React.Component {
       id:'',
       name:'',
       email:'',
+      level:''
     },
     token:''
   }
@@ -60,10 +61,11 @@ class LoginScreen extends React.Component {
       if(this.props.user == null){
         alert('Wrong email or password!')
       } else {
-       
+    
         AsyncStorage.setItem('userName',this.props.user.name)
         AsyncStorage.setItem('id', this.props.user.id.toString())
         AsyncStorage.setItem('userEmail', this.props.user.email)
+        AsyncStorage.setItem('userLevel', this.props.user.level.toString())
         AsyncStorage.setItem('token', this.props.token)
   
         await AsyncStorage.getItem('userName').then((value) => {
@@ -77,6 +79,14 @@ class LoginScreen extends React.Component {
           if (value !== null) {
             value = parseInt(value);
             this.setState({user:{...this.state.user, id:value}})
+          }
+        });
+
+        await AsyncStorage.getItem('userLevel').then((value) => {
+          // console.log('log val',value);
+          if (value !== null) {
+            value = parseInt(value);
+            this.setState({user:{...this.state.user, level:value}})
           }
         });
   

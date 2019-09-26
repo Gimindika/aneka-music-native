@@ -19,6 +19,7 @@ class LogoutButton extends Component {
     AsyncStorage.removeItem('userName')
     AsyncStorage.removeItem('id')
     AsyncStorage.removeItem('userEmail')
+    AsyncStorage.removeItem('userLevel')
     AsyncStorage.removeItem('token')
     this.props.dispatch(logout());
     this.props.dispatch(resetWishlist());

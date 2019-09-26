@@ -1,86 +1,209 @@
-// import React, { Component, Fragment } from "react";
-// import {Image, Dimensions} from 'react-native';
-// import {  Card, CardItem, Text, Body, Icon, Left, Right } from "native-base";
-// import { connect } from 'react-redux';
+import React, { Component, Fragment } from "react";
+import {Image, Dimensions,  View, ScrollView} from 'react-native';
+import {  Card, CardItem, Container,Text, Icon, Left, Right } from "native-base";
+import { connect } from 'react-redux';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { getCart, addCart } from '../public/redux/actions/cart';
+import { getWishlist, addWishlist, deleteWishlist } from '../public/redux/actions/wishlist';
+import { getItemDetails } from '../public/redux/actions/items';
+import AsyncStorage from '@react-native-community/async-storage'
 
+ class ItemDetails extends Component {
+  state={
+    itemDetails:{},
+    itemstock:[],
+    cart:[],
+    wishlist:[],
+    isWishlisted: false,
+    isAddedtoCart: false,
+    id:'',
 
-//  class ItemDetails extends Component {
+    user:{
+      id:'',
+      level:''
+    },
+    token:'',
+    header:''
+}
 
-//   render(props) {
-//     const  {height, width} = Dimensions.get('window');
-//     return (
-//           <Card style={{width:width, height:height/4, borderColor:'#F5D372', marginBottom:5, padding:0}} >
-               
-//             <CardItem style={{flex:10}}>
-//               <Left style ={{width:width, height:height/4-30, flex:4, paddingRight:0, paddingLeft:0}} >
-//                   <CardItem style ={{ paddingRight:0, paddingLeft:0}} button onPress={() => alert("This is Image")}>
-//                     <Image source={{uri:this.props.item.image }} style ={{width:width/3, height:height/5,marginLeft:0, paddingLeft:0, borderColor:'black', resizeMode:"contain"}}/>
-//                   </CardItem>
-//               </Left>
+componentDidMount = async () => {
+    await AsyncStorage.getItem('id').then((value) => {
+      // console.log(value);
+      if (value !== null) {
+        value = parseInt(value);
+        this.setState({user:{...this.state.user, id:value}})
+      }
+    });
 
-//               <Body style={{flex:8,marginLeft:20, padding:20, flexDirection:"column"}}>
-//                   <CardItem style={{paddingBottom:10, paddingTop:0}}>
-//                   <Text>{this.props.item.name}</Text>
-//                   </CardItem>
+    await AsyncStorage.getItem('userLevel').then((value) => {
+      console.log('val',value);
+      if (value !== null) {
+        value = parseInt(value);
+        this.setState({user:{...this.state.user, level:value}})
+      }
+    });
 
-//                   {this.props.isCart ?
-//                         (
-//                           <Fragment>
-//                             <CardItem style={{paddingBottom:0, paddingTop:0}}>
-//                             <Text>{this.props.item.branch}</Text>
-//                             </CardItem>
+    await AsyncStorage.getItem('token').then((value) => {
+      if (value !== null) {
+        this.setState({token:value})
+      }
+    });
+
+    const header = {headers:{'authorization':'Bearer '+this.state.token}};
+    this.setState({header:header});
+
+    const { navigation } = this.props;
+    const id = navigation.getParam('id');
+    this.setState({id:id});
+
+    await this.props.dispatch(getItemDetails(this.state.id));
+    await this.setState({itemDetails:this.props.itemDetails})
+    await this.setState({itemstock:this.state.itemDetails.itemstock})
+
+    //wishlist//////////////////////////////////////////////////////////
+    await this.props.dispatch(getWishlist(this.state.user.id,this.state.header));
+    await this.setState({wishlist:this.props.wishlist})
+
+    this.state.wishlist.map(item => {
+        if(this.state.id == item.id){ // eslint-disable-line
+            this.setState({isWishlisted:true})
+        }
+        return null;
+    })
+
+    //cart///////////////////////////////////////////////////////
+    await this.props.dispatch(getCart(this.state.user.id,this.state.header));
+    await this.setState({cart:this.props.cart}) 
+   
+  }
+
+  //wishlist//////////////////////////////////////////////////////
+  addRemoveWishlist = async (user, item, command) => {
+    if(command == 'add'){ // eslint-disable-line
+        await this.props.dispatch(addWishlist(user, item, this.state.header));
+        await this.setState({
+            wishlist:this.props.wishlist,
+            isWishlisted:true
+        });
+    } else if(command == 'remove') { // eslint-disable-line
+        await this.props.dispatch(deleteWishlist(user, item, this.state.header));
+        await this.setState({
+            wishlist:this.props.wishlist,
+            isWishlisted:false
+        });
+    }
+  }
+
+  //cart///////////////////////////////////////////////////////////
+  addToCart = async (user, itemID, item, branchID, branch, price, quantity) => {
+    await this.state.cart.map( (cartitem) => {
+        if(cartitem != undefined){ // eslint-disable-line
+            if (item == cartitem.item && branch == cartitem.branch){ // eslint-disable-line
+            this.setState({isAddedtoCart:true});
+            }
+        }  
+        return null;      
+    })
+    
+    
+    if(!this.state.isAddedtoCart){
+        const data = {
+            itemID,
+            item,
+            price,
+            branchID,
+            branch,
+            quantity
+        }
+        
+        await this.props.dispatch(addCart(user,data,this.state.header))
+        
+        await this.setState({
+            cart:this.props.cart,
+            isAddedtoCart:true
+        });
+        
+        alert('Item has been added to cart.');
+    } else {
+        alert('The item is ready, go to checkout.');
+        this.setState({isAddedtoCart:false});
+    }
+  }
+
+  render(props) {
+    const  {height, width} = Dimensions.get('window');
+    return (
+      <Fragment>
+          <Card style={{marginBotton:0}}>      
+            <CardItem style ={{ paddingRight:0, paddingLeft:0}}>
+            <Image source={{uri: this.props.itemDetails.image }} style ={{width:width, height:height/3,marginLeft:0, paddingLeft:0, borderColor:'black', resizeMode:"contain"}}/>
+            </CardItem>
           
-//                             <CardItem style={{paddingBottom:0, paddingTop:0}}>
-//                             <Text>{this.props.item.price}</Text>
-//                             </CardItem> 
-//                           </Fragment>
-//                   )
-//                   :null}
-//                 </Body>
+          <ScrollView >
+              <CardItem style={{backgroundColor:'red',paddingBottom:0}}>
+                <Container style={{flex:4, backgroundColor:'green',paddingTop:0, paddingBottom:0, marginTop:0, width:width-50, margin:0,  flexDirection:"column"}}>
+                  <Text>{this.props.itemDetails.name}</Text>
+                  <Text>({this.props.itemDetails.category})</Text>
+                  <Text></Text>
+                  <Text>{this.props.itemDetails.description}</Text>
+                </Container>
 
-//               <Right style={{flex:2, flexWrap:"nowrap"}}>
-//                 <Body>
-//                     {this.state.isWishlisted ? 
-//                       <CardItem style={{paddingBottom:0, paddingTop:0}}>
-//                           <Icon name="heart" style={{ paddingTop:0, color:'red'}}/>
-//                       </CardItem>
-//                       :
-//                       null
-//                       // <CardItem style={{paddingBottom:0, paddingTop:0}} button onPress={() => alert("This is not Wishlisted")}>
-//                       //     <Icon name="heart" style={{ paddingTop:0, color:'grey'}}/>
-//                       // </CardItem>
-//                     }
-                    
-//                     {this.props.isCart ?
-//                         (
-//                           <Fragment>
-//                             <CardItem button onPress={() => alert("This is Plus")} style={{paddingBottom:0, flexWrap:"nowrap"}}>
-//                                 <Text>+</Text>
-//                             </CardItem>
-                            
-//                             <Text style={{paddingBottom:0, paddingTop:0,flexWrap:"nowrap"}}>100</Text>
+                {this.state.user.level > 0 ? (
+                    <Fragment>
+                    {this.state.isWishlisted ? 
+                        <Container style={{flex:1,alignItems:'center'}}>
+                          <Icon name="heart" style={{ paddingTop:10, color:'red'}} onPress={() => this.addRemoveWishlist(this.state.user.id, this.state.id, 'remove')}/>
+                        </Container>
+                        :
+                        <Container style={{flex:1,alignItems:'center'}}>
+                          <Icon name="heart" style={{ paddingTop:10, color:'grey'}} onPress={() => this.addRemoveWishlist(this.state.user.id, this.state.id, 'add')}/>
+                        </Container>
+                    }
+                    </Fragment>
+                ) :null}
 
-//                             <CardItem button onPress={() => alert("This is Minus")} style={{paddingBottom:0, paddingTop:0,flexWrap:"nowrap"}}>
-//                                 <Text>-</Text>
-//                             </CardItem>
-//                           </Fragment>
-//                         )
-                  
-//                     :null}
-//                 </Body>
-//               </Right>
+                
+              </CardItem>
 
-//             </CardItem>
+              <Text>Available at : </Text>
+              <CardItem style={{flex:1, flexDirection:"column", justifyContent:"flex-start"}}>
+            
+                {this.state.itemstock ? 
+                  <Fragment>
+                    {this.state.itemstock.map((item, index) => {
+                      return(
 
-//           </Card>
-//     );
-//   }
-// }
+                        <Container style={{flex:3,paddingBottom:0, width:width-50,justifyContent:"space-between", flexDirection:"row", borderWidth:1, borderColor:'black'}}>
+                          <Text>{item.branch}</Text>
+                          <Text>{item.quantity}</Text>
+                          <Text>{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
+                          {this.state.user.level > 0 ? (
+                          <TouchableOpacity onPress={() => {this.addToCart(this.state.user.id, this.state.id, this.state.itemDetails.name, item.branchID, item.branch, item.price, 1)}}>
+                            <Text style={{color:'white', backgroundColor:'orange', borderRadius:10, padding:5}}>Add to Cart</Text>
+                          </TouchableOpacity>
+                          )
+                          :null}
+                        </Container>
+                      )
+                    })}
+                  </Fragment>
+                  :alert('error itemstock not loaded')}
+              </CardItem>
+          </ScrollView>
 
-// function mapStateToProps(state){
-//   return{
-//       ItemDetails: state.wishlist.ItemDetails
-//   }
-// }
+        </Card>
+      </Fragment>
+    );
+  }
+}
 
-// export default connect(mapStateToProps)(ItemDetails);
+function mapStateToProps(state){
+  return{
+      itemDetails: state.items.itemDetails,
+      cart:state.cart.cart,
+      wishlist: state.wishlist.wishlist,
+      user: state.user.user
+  }
+}
+
+export default connect(mapStateToProps)(ItemDetails);

@@ -5,20 +5,7 @@ import { connect } from 'react-redux';
 
 
  class ItemCard extends Component {
-  state = {
-    isWishlisted:false
-  }
-  componentDidMount = () => {
-    this.props.wishlist ?
-      this.props.wishlist.map(item => {
-        console.log('w',item.id);
-        console.log('i',this.props.item.id);
-        if(item.id == this.props.item.id){
-          this.setState({isWishlisted:true})
-        }
-      })
-    : null;
-  }
+  
 
   render(props) {
     const  {height, width} = Dimensions.get('window');
@@ -29,7 +16,7 @@ import { connect } from 'react-redux';
             {!this.props.isCart ? 
               
               <Left style ={{width:width, height:height/4-30, flex:4, paddingRight:0, paddingLeft:0}} >
-                  <CardItem style ={{ paddingRight:0, paddingLeft:0}} button onPress={() => alert("This is Image")}>
+                  <CardItem style ={{ paddingRight:0, paddingLeft:0}} button>
                     <Image source={{uri:this.props.item.image }} style ={{width:width/3, height:height/5,marginLeft:0, paddingLeft:0, borderColor:'black', resizeMode:"contain"}}/>
                   </CardItem>
               </Left>
@@ -61,16 +48,16 @@ import { connect } from 'react-redux';
 
               <Right style={{flex:2, flexWrap:"nowrap"}}>
                 <Body>
-                    {this.state.isWishlisted ? 
+                    {/* {this.state.isWishlisted ? 
                       <CardItem style={{paddingBottom:0, paddingTop:0}}>
                           <Icon name="heart" style={{ paddingTop:0, color:'red'}}/>
                       </CardItem>
                       :
                       null
-                      // <CardItem style={{paddingBottom:0, paddingTop:0}} button onPress={() => alert("This is not Wishlisted")}>
-                      //     <Icon name="heart" style={{ paddingTop:0, color:'grey'}}/>
-                      // </CardItem>
-                    }
+                      <CardItem style={{paddingBottom:0, paddingTop:0}} button onPress={() => alert("This is not Wishlisted")}>
+                          <Icon name="heart" style={{ paddingTop:0, color:'grey'}}/>
+                      </CardItem>
+                    } */}
                     
                     {this.props.isCart ?
                         (

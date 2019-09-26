@@ -62,14 +62,15 @@ const initialState = {
           isRejected: false,
           isFullfiled: false
         };
-      case "DELETE_WISHLIST_REJdataAfterDeleteECTED":
+      case "DELETE_WISHLIST_REJECTED":
         return {
           ...state,
           isLoading: false,
           isRejected: true
         };
-      case "DELETE_WISHLIST_FULFILLED":                                             // eslint-disable-next-line
-        const dataAfterDelete = state.wishlist.filter(item => item.id != action.payload.data.data.id);
+      case "DELETE_WISHLIST_FULFILLED":                
+                                   // eslint-disable-next-line
+        const dataAfterDelete = state.wishlist.filter(item => item.id != action.payload.data.data.item);
         return {
           ...state,
           isLoading: false,
