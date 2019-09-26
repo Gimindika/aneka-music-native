@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
             {!this.props.isCart ? 
               
               <Left style ={{width:width, height:height/4-30, flex:4, paddingRight:0, paddingLeft:0}} >
-                  <CardItem style ={{ paddingRight:0, paddingLeft:0}} button>
+                  <CardItem style ={{ paddingRight:0, paddingLeft:0}}>
                     <Image source={{uri:this.props.item.image }} style ={{width:width/3, height:height/5,marginLeft:0, paddingLeft:0, borderColor:'black', resizeMode:"contain"}}/>
                   </CardItem>
               </Left>

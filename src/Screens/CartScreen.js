@@ -129,7 +129,7 @@ componentDidMount = async () => {
             <React.Fragment>
             <ScrollView style={{flex:1, }}>
               <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-            {console.log(this.props.cart)}
+           
                 {this.props.cart.length? 
                 <React.Fragment>
                   {this.props.cart.map((item,index) => {
@@ -138,7 +138,7 @@ componentDidMount = async () => {
                       // <ItemCard item={item} isCart='true' key={index}/>
 
                       // itemcard Card /////////////////////////////////////////////
-                      <Card style={{width:width, height:height/4, borderColor:'#F5D372', marginBottom:5, padding:0, borderColor:'orange', borderWidth:2}} >
+                      <Card index={index} style={{width:width, height:height/4, borderColor:'#F5D372', marginBottom:5, padding:0, borderColor:'orange', borderWidth:2}} >
 
                       <CardItem style={{flex:10}}> 
 

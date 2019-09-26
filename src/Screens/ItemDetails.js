@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import {Image, Dimensions,  View, ScrollView} from 'react-native';
-import {  Card, CardItem, Container,Text, Icon, Left, Right } from "native-base";
+import {  Card, CardItem, Container,Text, Icon, Left, Right,Item } from "native-base";
 import { connect } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { getCart, addCart } from '../public/redux/actions/cart';
@@ -140,8 +140,8 @@ componentDidMount = async () => {
             </CardItem>
           
           <ScrollView >
-              <CardItem style={{backgroundColor:'red',paddingBottom:0}}>
-                <Container style={{flex:4, backgroundColor:'green',paddingTop:0, paddingBottom:0, marginTop:0, width:width-50, margin:0,  flexDirection:"column"}}>
+              <CardItem style={{paddingBottom:0}}>
+                <Container style={{flex:4, paddingTop:0, paddingBottom:0, marginTop:0, width:width-50, margin:0,  flexDirection:"column"}}>
                   <Text>{this.props.itemDetails.name}</Text>
                   <Text>({this.props.itemDetails.category})</Text>
                   <Text></Text>
@@ -161,33 +161,40 @@ componentDidMount = async () => {
                     }
                     </Fragment>
                 ) :null}
-
-                
               </CardItem>
 
               <Text>Available at : </Text>
-              <CardItem style={{flex:1, flexDirection:"column", justifyContent:"flex-start"}}>
+              <CardItem style={{flexDirection:"column", justifyContent:"flex-start"}}>
             
                 {this.state.itemstock ? 
-                  <Fragment>
+                  <Fragment >
+                        <Container style={{flex:3,paddingBottom:0, paddingLeft:0, marginLeft:0, width:width-50, justifyContent:"flex-start", flexDirection:"column", }}>
+
                     {this.state.itemstock.map((item, index) => {
                       return(
-
-                        <Container style={{flex:3,paddingBottom:0, width:width-50,justifyContent:"space-between", flexDirection:"row", borderWidth:1, borderColor:'black'}}>
+                        // <Container style={{flex:3,paddingBottom:0, width:width-50, justifyContent:"space-between", flexDirection:"row", borderWidth:1, borderColor:'black'}}>
+                        <CardItem style={{ width:width, height:50, paddingLeft:0, marginLeft:0,  justifyContent:"space-between", flexDirection:"row"}}>
+                        
+                        
                           <Text>{item.branch}</Text>
-                          <Text>{item.quantity}</Text>
-                          <Text>{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
+                         
+                          <Text>{item.quantity} unit(s)</Text>
+                          <Text>Rp.{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
                           {this.state.user.level > 0 ? (
                           <TouchableOpacity onPress={() => {this.addToCart(this.state.user.id, this.state.id, this.state.itemDetails.name, item.branchID, item.branch, item.price, 1)}}>
                             <Text style={{color:'white', backgroundColor:'orange', borderRadius:10, padding:5}}>Add to Cart</Text>
                           </TouchableOpacity>
                           )
                           :null}
-                        </Container>
+                        </CardItem>
+                        // </Container>
                       )
                     })}
+                    </Container>
                   </Fragment>
+                
                   :alert('error itemstock not loaded')}
+                  
               </CardItem>
           </ScrollView>
 
