@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
-import {  Button } from 'native-base';
+import {  Button, Icon } from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage'
 import { withNavigation } from 'react-navigation';
 import { logout } from '../public/redux/actions/user';
@@ -30,8 +30,9 @@ class LogoutButton extends Component {
 
   render() {
     return (
-          <Button bordered warning  style={{width:40, height:40, borderRadius:10, margin:5}} onPress={this.logout}>
-            <Image style={{width:40, height:40, borderRadius:10}} source={require('../imgs/logout.png')}/>
+          <Button bordered warning  style={{width:40, height:40, borderRadius:10, margin:5, borderColor:'white'}} onPress={this.logout}>
+            {/* <Image style={{width:40, height:40, borderRadius:10}} source={require('../imgs/logout.png')}/> */}
+            <Icon name="exit" style={{ color:'white',width:40, height:40, borderRadius:10, paddingLeft:10, paddingTop:7}}/>
           </Button>
     );
   }
