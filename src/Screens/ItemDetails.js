@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import {Image, Dimensions,  View, ScrollView} from 'react-native';
-import {  Card, CardItem, Container,Text, Icon, Left, Right,Item } from "native-base";
+import {  Card, CardItem, Container,Text, Icon, Spinner } from "native-base";
 import { connect } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { getCart, addCart } from '../public/redux/actions/cart';
@@ -132,88 +132,99 @@ componentDidMount = async () => {
 
   render(props) {
     const  {height, width} = Dimensions.get('window');
-    return (
-      <Fragment>
-          <Card style={{marginBotton:0}}>      
-            <CardItem style ={{ paddingRight:0, paddingLeft:0}}>
-            <Image source={{uri: this.props.itemDetails.image }} style ={{width:width, height:height/3,marginLeft:0, paddingLeft:0, borderColor:'black', resizeMode:"contain"}}/>
-            </CardItem>
-          
-          <ScrollView >
-              <CardItem style={{paddingBottom:0}}>
-                <Container style={{flex:4, paddingTop:0, paddingBottom:0, marginTop:0, width:width-50, margin:0,  flexDirection:"column"}}>
-                  <Text>{this.props.itemDetails.name}</Text>
-                  <Text>({this.props.itemDetails.category})</Text>
-                  <Text></Text>
-                  <Text>{this.props.itemDetails.description}</Text>
-                </Container>
+    if(this.props.itemDetailsLoading){
+      return(
+        <Fragment>
+          <Spinner color='orange' style={{ marginTop: '50%' }} />
+        </Fragment>
+      )
+    }else {
 
-                {this.state.user.level > 0 ? (
-                    <Fragment>
-                    {this.state.isWishlisted ? 
-                        <Container style={{flex:1,alignItems:'center'}}>
-                          <Icon name="heart" style={{ paddingTop:10, color:'red'}} onPress={() => this.addRemoveWishlist(this.state.user.id, this.state.id, 'remove')}/>
-                        </Container>
-                        :
-                        <Container style={{flex:1,alignItems:'center'}}>
-                          <Icon name="heart" style={{ paddingTop:10, color:'grey'}} onPress={() => this.addRemoveWishlist(this.state.user.id, this.state.id, 'add')}/>
-                        </Container>
-                    }
-                    </Fragment>
-                ) :null}
+      return (
+        <Fragment>
+            <Card style={{marginBotton:0}}>      
+              <CardItem style ={{ paddingRight:0, paddingLeft:0}}>
+              <Image source={{uri: this.props.itemDetails.image }} style ={{width:width, height:height/3,marginLeft:0, paddingLeft:0, borderColor:'black', resizeMode:"contain"}}/>
               </CardItem>
-
-              <Text>Available at : </Text>
-              <CardItem style={{flexDirection:"column", justifyContent:"flex-start", paddingLeft:0, paddingRight:0, marginLeft:0, marginRight:0}}>
             
-                {this.state.itemstock ? 
-                  <Fragment >
-
-                        <Container style={{flex:3,paddingBottom:0, paddingLeft:0, marginLeft:0, width:width-50, justifyContent:"flex-start", flexDirection:"row" , flexWrap:"wrap"}}>
-
-                    {this.state.itemstock.map((item, index) => {
-                      return(
-                        
-                        <ScrollView >
-                        <CardItem key={index} style={{ justifyContent:"space-between", flexDirection:"column" }}>
-                        
-                          <CardItem style={{alignSelf:'flex-start'}}>
-                            <Text >{item.branch} : </Text>
+            <ScrollView >
+                <CardItem style={{paddingBottom:0}}>
+                  <Container style={{flex:4, paddingTop:0, paddingBottom:0, marginTop:0, width:width-50, margin:0,  flexDirection:"column"}}>
+                    <Text>{this.props.itemDetails.name}</Text>
+                    <Text>({this.props.itemDetails.category})</Text>
+                    <Text></Text>
+                    <Text>{this.props.itemDetails.description}</Text>
+                  </Container>
+  
+                  {this.state.user.level > 0 ? (
+                      <Fragment>
+                      {this.state.isWishlisted ? 
+                          <Container style={{flex:1,alignItems:'center'}}>
+                            <Icon name="heart" style={{ paddingTop:10, color:'red'}} onPress={() => this.addRemoveWishlist(this.state.user.id, this.state.id, 'remove')}/>
+                          </Container>
+                          :
+                          <Container style={{flex:1,alignItems:'center'}}>
+                            <Icon name="heart" style={{ paddingTop:10, color:'grey'}} onPress={() => this.addRemoveWishlist(this.state.user.id, this.state.id, 'add')}/>
+                          </Container>
+                      }
+                      </Fragment>
+                  ) :null}
+                </CardItem>
+  
+                <Text>Available at : </Text>
+                <CardItem style={{flexDirection:"column", justifyContent:"flex-start", paddingLeft:0, paddingRight:0, marginLeft:0, marginRight:0}}>
+              
+                  {this.state.itemstock ? 
+                    <Fragment >
+  
+                          <Container style={{flex:3,paddingBottom:0, paddingLeft:0, marginLeft:0, width:width-50, justifyContent:"flex-start", flexDirection:"row" , flexWrap:"wrap"}}>
+  
+                      {this.state.itemstock.map((item, index) => {
+                        return(
+                          
+                          <ScrollView >
+                          <CardItem key={index} style={{ justifyContent:"space-between", flexDirection:"column" }}>
+                          
+                            <CardItem style={{alignSelf:'flex-start'}}>
+                              <Text >{item.branch} : </Text>
+                            </CardItem>
+                           
+                            <CardItem style={{ alignItems:"flex-start",alignSelf:"flex-start", flexDirection:"row", marginLeft:0}}>
+                              
+                              <Text>{item.quantity} unit(s)</Text>
+                              <Text>Rp.{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
+                              {this.state.user.level > 0 ? (
+                              <TouchableOpacity onPress={() => {this.addToCart(this.state.user.id, this.state.id, this.state.itemDetails.name, item.branchID, item.branch, item.price, 1)}}>
+                                <Text style={{color:'white', backgroundColor:'orange', borderRadius:10, padding:5}}>Add to Cart</Text>
+                              </TouchableOpacity>
+                              )
+                              :null}
+                            </CardItem>
                           </CardItem>
-                         
-                          <CardItem style={{ alignItems:"flex-start",alignSelf:"flex-start", flexDirection:"row", marginLeft:0}}>
-                            
-                            <Text>{item.quantity} unit(s)</Text>
-                            <Text>Rp.{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
-                            {this.state.user.level > 0 ? (
-                            <TouchableOpacity onPress={() => {this.addToCart(this.state.user.id, this.state.id, this.state.itemDetails.name, item.branchID, item.branch, item.price, 1)}}>
-                              <Text style={{color:'white', backgroundColor:'orange', borderRadius:10, padding:5}}>Add to Cart</Text>
-                            </TouchableOpacity>
-                            )
-                            :null}
-                          </CardItem>
-                        </CardItem>
-                    </ScrollView>
-                      
-                      )
-                    })}
-                    </Container>
-                  </Fragment>
-                
-                  :alert('error itemstock not loaded')}
+                      </ScrollView>
+                        
+                        )
+                      })}
+                      </Container>
+                    </Fragment>
                   
-              </CardItem>
-          </ScrollView>
+                    :alert('error itemstock not loaded')}
+                    
+                </CardItem>
+            </ScrollView>
+  
+          </Card>
+        </Fragment>
+      );
+    }
 
-        </Card>
-      </Fragment>
-    );
   }
 }
 
 function mapStateToProps(state){
   return{
       itemDetails: state.items.itemDetails,
+      itemDetailsLoading: state.items.isLoading,
       cart:state.cart.cart,
       wishlist: state.wishlist.wishlist,
       user: state.user.user

@@ -4,7 +4,7 @@ import React, {Fragment} from 'react';
 import {ScrollView, View, Text, Image, Dimensions} from 'react-native';
 // import ItemCard from '../Components/ItemCard';
 
-import {  Card, CardItem, Body, Icon, Left, Right } from "native-base";
+import {  Card, CardItem, Body, Spinner, Right } from "native-base";
 import HeaderComponent  from '../Components/HeaderComponent';
 import FooterComponent from '../Components/FooterComponent';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -114,97 +114,102 @@ componentDidMount = async () => {
 
   render(){
     const  {height, width} = Dimensions.get('window');
-    console.log('width',width);
-    
-    return (
+    if(this.props.cartLoading){
+      return(
         <Fragment>
-            <HeaderComponent/>
-            <Text>Cart</Text>
-            {/* {console.log('asd',this.props.cart)}
-            <Cart cart={this.props.cart}/> */}
-
-            {/* cart ////////////////////////////////////////// */}
-            <React.Fragment>
-            <ScrollView style={{flex:1, }}>
-              <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-           
-                {this.props.cart.length? 
-                <React.Fragment>
-                  {this.props.cart.map((item,index) => {
-                    return(
-
-                      // <ItemCard item={item} isCart='true' key={index}/>
-
-                      // itemcard Card /////////////////////////////////////////////
-                      <Card index={index} style={{width:width, height:height/4, borderColor:'#F5D372', marginBottom:5, padding:0, borderColor:'orange', borderWidth:2}} >
-
-                      <CardItem style={{flex:10}}> 
-
-                        <Body style={{flex:8,marginLeft:20, padding:20, flexDirection:"column"}}>
-                            <CardItem style={{paddingBottom:10, paddingTop:0}}>
-                            
-                              <Text>{item.item}</Text>
-                            
-                            </CardItem>
-
-                            
-                            <Fragment>
-                              <CardItem style={{paddingBottom:0, paddingTop:0}}>
-                              <Text>{item.branch}</Text>
-                              </CardItem>
-            
-                              <CardItem style={{paddingBottom:0, paddingTop:0}}>
-                              <Text>Rp. {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
-                              </CardItem> 
-
-                              <CardItem style={{paddingBottom:0, paddingTop:0}}>
-                              <Text>Subtotal : Rp. {(item.price * item.quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
-                              </CardItem> 
-                            </Fragment>
-                            
-                          </Body>
-
-                        <Right style={{flex:2, flexWrap:"nowrap"}}>
-                          <Body>
-                              
-                              
-                            <Fragment>
-                              <CardItem button onPress={() => {this.editQuantity(this.state.user.id, item.itemID, item.branchID, item.quantity+=1)}} style={{paddingBottom:0, flexWrap:"nowrap"}}>
-                                  <Text>+</Text>
-                              </CardItem>
-                              
-                              <Text style={{paddingBottom:0, paddingTop:0,flexWrap:"nowrap"}}>{item.quantity}</Text>
-                             
-                              <CardItem button onPress={() => {this.editQuantity(this.state.user.id, item.itemID, item.branchID, item.quantity-=1)}} style={{paddingBottom:0, paddingTop:0,flexWrap:"nowrap"}}>
-                                  <Text>-</Text>
-                              </CardItem>
-                            </Fragment>
-                                
-                          </Body>
-                        </Right>
-
-                      </CardItem>
-
-                    </Card>
-                    //end of itemcard////////////////////////////////////////////////////////////////////////////
-                    )
-                  })}
-                </React.Fragment>
-                :   
-                <Text>No item(s) in your cart</Text>
-                }
-              </View>
-            </ScrollView>
-            </React.Fragment>
-
-            <Text>Total : Rp. {this.total().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>            
-            <TouchableOpacity>
-                    <Text style={{color:'white', backgroundColor:'orange', textAlign:"center", textAlignVertical:"center", height:40}} onPress={() => this.handleCheckout()}  >Checkout</Text>
-            </TouchableOpacity>
-
-            <FooterComponent/>
+          <Spinner color='orange' style={{ marginTop: '50%' }} />
         </Fragment>
-    );
+      )
+    }else {
+      
+      return (
+          <Fragment>
+              <HeaderComponent/>
+              <Text style={{textAlign:"center", fontSize:30, fontWeight:"900"}}>Cart</Text>
+           
+              {/* cart ////////////////////////////////////////// */}
+              <React.Fragment>
+              <ScrollView style={{flex:1, }}>
+                <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
+             
+                  {this.props.cart.length? 
+                  <React.Fragment>
+                    {this.props.cart.map((item,index) => {
+                      return(
+  
+                        // <ItemCard item={item} isCart='true' key={index}/>
+  
+                        // itemcard Card /////////////////////////////////////////////
+                        <Card key={index} style={{width:width, height:height/4, borderColor:'#F5D372', marginBottom:5, padding:0, borderColor:'orange', borderWidth:2}} >
+  
+                        <CardItem style={{flex:10}}> 
+  
+                          <Body style={{flex:8,marginLeft:20, padding:20, flexDirection:"column"}}>
+                              <CardItem style={{paddingBottom:10, paddingTop:0}}>
+                              
+                                <Text>{item.item}</Text>
+                              
+                              </CardItem>
+  
+                              
+                              <Fragment>
+                                <CardItem style={{paddingBottom:0, paddingTop:0}}>
+                                <Text>{item.branch}</Text>
+                                </CardItem>
+              
+                                <CardItem style={{paddingBottom:0, paddingTop:0}}>
+                                <Text>Rp. {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
+                                </CardItem> 
+  
+                                <CardItem style={{paddingBottom:0, paddingTop:0}}>
+                                <Text>Subtotal : Rp. {(item.price * item.quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
+                                </CardItem> 
+                              </Fragment>
+                              
+                            </Body>
+  
+                          <Right style={{flex:2, flexWrap:"nowrap"}}>
+                            <Body>
+                                
+                                
+                              <Fragment>
+                                <CardItem button onPress={() => {this.editQuantity(this.state.user.id, item.itemID, item.branchID, item.quantity+=1)}} style={{paddingBottom:0, flexWrap:"nowrap"}}>
+                                    <Text>+</Text>
+                                </CardItem>
+                                
+                                <Text style={{paddingBottom:0, paddingTop:0,flexWrap:"nowrap"}}>{item.quantity}</Text>
+                               
+                                <CardItem button onPress={() => {this.editQuantity(this.state.user.id, item.itemID, item.branchID, item.quantity-=1)}} style={{paddingBottom:0, paddingTop:0,flexWrap:"nowrap"}}>
+                                    <Text>-</Text>
+                                </CardItem>
+                              </Fragment>
+                                  
+                            </Body>
+                          </Right>
+  
+                        </CardItem>
+  
+                      </Card>
+                      //end of itemcard////////////////////////////////////////////////////////////////////////////
+                      )
+                    })}
+                  </React.Fragment>
+                  :   
+                  <Text>No item(s) in your cart</Text>
+                  }
+                </View>
+              </ScrollView>
+              </React.Fragment>
+  
+              <Text style={{fontSize:20, fontWeight:"600"}}>Total : Rp. {this.total().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>            
+              <TouchableOpacity>
+                      <Text style={{color:'white', backgroundColor:'orange', textAlign:"center", textAlignVertical:"center", height:40}} onPress={() => this.handleCheckout()}  >Checkout</Text>
+              </TouchableOpacity>
+  
+              <FooterComponent/>
+          </Fragment>
+      );
+    }
   }
   
 };
@@ -212,7 +217,8 @@ componentDidMount = async () => {
 
 function mapStateToProps(state){
   return{
-      cart: state.cart.cart
+    cartLoading: state.cart.isLoading, 
+    cart: state.cart.cart
   }
 }
 

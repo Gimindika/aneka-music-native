@@ -4,62 +4,78 @@ import React, {Fragment} from 'react';
 import {Text} from 'react-native';
 import HeaderComponent  from '../Components/HeaderComponent';
 import FooterComponent from '../Components/FooterComponent';
-// import {getWishlist} from '../public/redux/actions/wishlist';
+import {Spinner} from 'native-base';
+import {getWishlist} from '../public/redux/actions/wishlist';
 import { connect } from 'react-redux';
-// import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-community/async-storage'
 
 
 
 import Wishlist from './Wishlist';
 
 class WishlistScreen extends React.Component {
-  // state = {
-  //   user:{
-  //     id:''
-  //   },
-  //   token:''
-  // }
+constructor(props){
+    super(props);
+    this.state = {
+        user:{
+          id:'',
+          name:'',
+          email:'',
+        },
+        token:'',
+        header:'',
+    }
+  }
 
-  // componentDidMount = async () => {
-  //   await AsyncStorage.getItem('token').then((value) => {
-  //     if (value !== null) {
-  //       this.setState({token:value})
-  //     }
-  //   });
+  componentDidMount = async () => {
 
-  //   await AsyncStorage.getItem('id').then((value) => {
-  //     value = parseInt(value);
-  //     if (value !== null) {
-  //       this.setState({user:{...this.state.user, id:value}})
-  //     }
-  //   });
-  //   console.log('state',this.state);
+      await AsyncStorage.getItem('id').then((value) => {
+        if (value !== null) {
+          value = parseInt(value);
+          this.setState({user:{...this.state.user, id:value}})
+        }
+      });
 
-  //   const header = {headers:{'authorization':'Bearer '+this.state.token}};
-  //   await this.props.dispatch(getWishlist(this.state.user.id, header))
-  //   console.log('wish',this.props.wishlist);
-    
-  // }
+      await AsyncStorage.getItem('token').then((value) => {
+        if (value !== null) {
+          this.setState({token:value})
+        }
+      });
+      
+      const header = {headers:{'authorization':'Bearer '+this.state.token}};
+      this.setState({header:header});
+
+
+      await this.props.dispatch(getWishlist(this.state.user.id, this.state.header));
+  }
 
   render(){
-    return (
+    if(this.props.wishlistLoading){
+      return(
         <Fragment>
-            <HeaderComponent/>
-            <Text>Wishlist</Text>
-            <Wishlist whishlist={this.props.wishlist}/>
-
-            <FooterComponent/>
+          <Spinner color='orange' style={{ marginTop: '50%' }} />
         </Fragment>
-    );
+      )
+    }else {
+
+      return (
+          <Fragment>
+              <HeaderComponent/>
+              <Text style={{textAlign:"center", fontSize:30, fontWeight:"900"}}>Wishlist</Text>
+              <Wishlist wishlist={this.props.wishlist}/>
+  
+              <FooterComponent/>
+          </Fragment>
+      );
+    }
   }
   
 };
 
 function mapStateToProps(state){
   return{
-      // user: state.user.user,
-      // token: state.user.token,
-      wishlist: state.wishlist.wishlist
+    wishlistLoading: state.wishlist.isLoading, 
+    wishlist: state.wishlist.wishlist
   }
 }
 

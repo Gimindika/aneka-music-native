@@ -2,7 +2,7 @@
 
 import React, {Fragment} from 'react';
 import { Text,  View, TextInput, Image} from 'react-native';
-import { Container, Content, Item } from 'native-base';
+import { Container, Spinner} from 'native-base';
 import HeaderComponent  from '../Components/HeaderComponent';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
@@ -49,71 +49,63 @@ class LoginScreen extends React.Component {
   // }
 
   login = async () => {
-   
-    // await this.setState({
-    //   email:this.state.email,
-    //   password:this.state.password
-    // })
-    if(this.state.email != '' && this.state.password != ''){
-
-      await this.props.dispatch(login(this.state));
-  
-      if(this.props.user == null){
-        alert('Wrong email or password!')
-      } else {
     
-        AsyncStorage.setItem('userName',this.props.user.name)
-        AsyncStorage.setItem('id', this.props.user.id.toString())
-        AsyncStorage.setItem('userEmail', this.props.user.email)
-        AsyncStorage.setItem('userLevel', this.props.user.level.toString())
-        AsyncStorage.setItem('token', this.props.token)
+    const data = ({
+      email:this.state.email,
+      password:this.state.password
+    })
+    if(this.state.email != '' && this.state.password != ''){
+      
+      await this.props.dispatch(login(data));
+      alert(this.props.userLoading)
+      if(this.props.userLoading){
+        return(
+          <Fragment>
+              <Spinner color='orange' style={{ marginTop: '50%' }} />
+            </Fragment>
+          )
+         
+      }else {
+        if(!this.props.user){
+          alert('Wrong email or password!')
+        } else {
+      
+          AsyncStorage.setItem('userName',this.props.user.name)
+          AsyncStorage.setItem('id', this.props.user.id.toString())
+          AsyncStorage.setItem('userEmail', this.props.user.email)
+          AsyncStorage.setItem('userLevel', this.props.user.level.toString())
+          AsyncStorage.setItem('token', this.props.token)
+    
+          await AsyncStorage.getItem('userName').then((value) => {
+            if (value !== null) {
+              this.setState({user:{...this.state.user, name:value}})
+            }
+          });
+    
+          await AsyncStorage.getItem('id').then((value) => {
+            // console.log(value);
+            if (value !== null) {
+              value = parseInt(value);
+              this.setState({user:{...this.state.user, id:value}})
+            }
+          });
   
-        await AsyncStorage.getItem('userName').then((value) => {
-          if (value !== null) {
-            this.setState({user:{...this.state.user, name:value}})
-          }
-        });
-  
-        await AsyncStorage.getItem('id').then((value) => {
-          // console.log(value);
-          if (value !== null) {
-            value = parseInt(value);
-            this.setState({user:{...this.state.user, id:value}})
-          }
-        });
-
-        await AsyncStorage.getItem('userLevel').then((value) => {
-          // console.log('log val',value);
-          if (value !== null) {
-            value = parseInt(value);
-            this.setState({user:{...this.state.user, level:value}})
-          }
-        });
-  
-        await AsyncStorage.getItem('userEmail').then((value) => {
-          if (value !== null) {
-            this.setState({user:{...this.state.user, email:value}})
-          }
-        });
-  
-        await AsyncStorage.getItem('token').then((value) => {
-          if (value !== null) {
-            this.setState({token:value})
-          }
-        });
-        // console.log('state', this.state);
+    
+          await AsyncStorage.getItem('token').then((value) => {
+            if (value !== null) {
+              this.setState({token:value})
+            }
+          });
+          
+          
+            
+          alert ('Welcome ' + this.state.user.name)
         
-        alert ('Welcome ' + this.state.user.name)
-        const header = {headers:{'authorization':'Bearer '+this.state.token}};
+          this.props.navigation.navigate('CategoryScreen');
+        }
 
-        await this.props.dispatch(getWishlist(this.state.user.id, header))
-        await this.props.dispatch(getCart(this.state.user.id, header))        
-       
-        await this.props.dispatch(getUserTransactions(this.state.user.id, header))
-
-
-        this.props.navigation.navigate('CategoryScreen');
       }
+
     } else {
       alert('Email and password can\'t be empty');
     }
@@ -166,6 +158,7 @@ class LoginScreen extends React.Component {
 function mapStateToProps(state){
   return{
       user: state.user.user,
+      userLoading: state.user.isLoading,
       token: state.user.token,
       cart:state.cart.cart
   }

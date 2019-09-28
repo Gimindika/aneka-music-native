@@ -5,7 +5,7 @@ import React, {Fragment} from 'react';
 import HeaderComponent  from '../Components/HeaderComponent';
 import FooterComponent from '../Components/FooterComponent';
 import ItemList from './ItemList';
-
+import { Spinner} from 'native-base';
 import { connect } from 'react-redux';
 import { getItemsByCategory } from '../public/redux/actions/items';
 // import SearchBar from '../Components/SearchBar';
@@ -23,22 +23,31 @@ class ItemListScreen extends React.Component {
   }
 
   render(){
-    return (
+    if(this.props.itemListLoading){
+      return(
         <Fragment>
-            <HeaderComponent/>
-            {/* <SearchBar/> */}
-
-            <ItemList items={this.props.items}/>
-
-            <FooterComponent/>
+          <Spinner color='orange' style={{ marginTop: '50%' }} />
         </Fragment>
-    );
+      )
+    }else {
+      return (
+          <Fragment>
+              <HeaderComponent/>
+              {/* <SearchBar/> */}
+
+                <ItemList items={this.props.items}/>
+
+              <FooterComponent/>
+          </Fragment>
+      );
+    }
   }
   
 };
 
 function mapStateToProps(state){
   return{
+    itemListLoading: state.items.isLoading,
     items: state.items.items
   }
 }

@@ -22,7 +22,7 @@ class Wishlist extends React.Component {
         <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
           {this.props.wishlist.length > 0 ? 
             <React.Fragment>
-              {this.props.whishlist.map((item,index) => {
+              {this.props.wishlist.map((item,index) => {
                 return(
                   <TouchableOpacity key={index} onPress={() => this.toItemDetails(item.id)} >
                     <ItemCard item={item}  />

@@ -5,7 +5,7 @@ import React, {Fragment} from 'react';
 import HeaderComponent  from '../Components/HeaderComponent';
 import FooterComponent from '../Components/FooterComponent';
 import CategoryList from './CategoryList';
-
+import { Spinner} from 'native-base';
 import { connect } from 'react-redux';
 import { getCategories } from '../public/redux/actions/categories';
 import SearchBar from '../Components/SearchBar';
@@ -30,21 +30,30 @@ class CategoryScreen extends React.Component {
   }
 
   render(){
-    return (
+    if(this.props.categoriesLoading){
+      return(
         <Fragment>
-            <HeaderComponent/>
-              <SearchBar/>
-
-              <CategoryList categories={this.props.categories} toItemList={ this.toItemList}/>        
-            <FooterComponent/>
+          <Spinner color='orange' style={{ marginTop: '50%' }} />
         </Fragment>
-    );
+      )
+    }else {
+      return (
+          <Fragment>
+              <HeaderComponent/>
+                <SearchBar/>
+
+                <CategoryList categories={this.props.categories} toItemList={ this.toItemList}/>        
+              <FooterComponent/>
+          </Fragment>
+      );
+    }
   }
   
 };
 
 function mapStateToProps(state){
   return{
+      categoriesLoading: state.categories.isLoading,
       categories: state.categories.categories
   }
 }

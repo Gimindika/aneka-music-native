@@ -8,7 +8,7 @@ import ItemList from './ItemList';
 
 import { connect } from 'react-redux';
 import { getItemsByName } from '../public/redux/actions/items';
-import { Text } from 'native-base';
+import { Text, Spinner } from 'native-base';
 
 class SearchResultScreen extends React.Component {
   state={
@@ -18,27 +18,35 @@ class SearchResultScreen extends React.Component {
     const { navigation } = this.props;
     const name = navigation.getParam('name');
     this.setState({name:name})
-    console.log('navparamsearch', name);
-    
     await this.props.dispatch(getItemsByName(name));
   }
 
   render(){
-    return (
+    if(this.props.itemListLoading){
+      return(
         <Fragment>
-            <HeaderComponent/>
-            <Text>{'Search result for keyword : '+ this.state.name}</Text>
-            <ItemList items={this.props.items}/>
-
-            <FooterComponent/>
+          <Spinner color='orange' style={{ marginTop: '50%' }} />
         </Fragment>
-    );
+      )
+    }else {
+
+      return (
+          <Fragment>
+              <HeaderComponent/>
+              <Text>{'Search result for keyword : '+ this.state.name}</Text>
+              <ItemList items={this.props.items}/>
+  
+              <FooterComponent/>
+          </Fragment>
+      );
+    }
   }
   
 };
 
 function mapStateToProps(state){
   return{
+    itemListLoading: state.items.isLoading,
     items: state.items.items
   }
 }

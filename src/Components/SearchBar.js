@@ -4,7 +4,7 @@ import { withNavigation } from 'react-navigation';
 
 class SearchBar extends Component {
   state ={
-    name:''
+    name:'Search item(s)'
   }
 
   inputHandler = (name, value) => {
@@ -12,14 +12,22 @@ class SearchBar extends Component {
   }
   
   search = () => {
-    this.props.navigation.navigate('SearchResultScreen', {name:this.state.name});
+    const searchtarget = this.state.name;
+    this.setState({name:'Search item(s)'})
+    this.props.navigation.navigate('SearchResultScreen', {name:searchtarget});
   }
 
   render() {
     return (
 
           <Item style={{width:'90%', alignSelf:'center'}}>
-            <Input placeholder='Search item(s)' style={{ paddingLeft:15, fontSize:20, borderRadius:20, border:'black'}} onChangeText={(txt) => this.inputHandler("name", txt)}/>
+            <Input  value={this.state.name} style={{ paddingLeft:15, fontSize:20, borderRadius:20, borderColor:'black'}} 
+            onFocus= {() => this.setState({name : ''})}
+            onChangeText={
+              (txt) => {  
+                this.inputHandler("name", txt)
+                }
+              }/>
             <Icon active name='search' button onPress={() => this.search()} />
           </Item>
 
