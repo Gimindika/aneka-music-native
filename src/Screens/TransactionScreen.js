@@ -7,7 +7,6 @@ import { Spinner, Card, CardItem, Text, Body, Left, Right } from "native-base";
 import HeaderComponent  from '../Components/HeaderComponent';
 import FooterComponent from '../Components/FooterComponent';
 
-// import TransactionList from './TransactionList';
 import AsyncStorage from '@react-native-community/async-storage'
 
 import { getUserTransactions } from '../public/redux/actions/transactions';
@@ -24,8 +23,6 @@ class TransactionScreen extends React.Component {
         userTransactions:[],
         user:{
           id:'',
-          name:'',
-          email:'',
         },
         token:'',
         header:'',
@@ -33,14 +30,10 @@ class TransactionScreen extends React.Component {
 
         receipt:false
     }
-}
+  }
 
 componentDidMount = async () => {
-    await AsyncStorage.getItem('userName').then((value) => {
-      if (value !== null) {
-        this.setState({user:{...this.state.user, name:value}})
-      }
-    });
+ 
 
     await AsyncStorage.getItem('id').then((value) => {
       if (value !== null) {

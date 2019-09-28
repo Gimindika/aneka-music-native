@@ -80,8 +80,8 @@ class RegisterScreen extends React.Component {
                       ></TextInput>
                     
                     <TouchableOpacity onPress={this.register}>
-                      <View style={{borderColor:'black', borderWidth:1, width:100,height:30 ,marginTop:10, marginBottom:20,borderRadius:10}}>
-                        <Text style={{textAlign:"center",  textAlignVertical:"center"}}>Register</Text>
+                      <View style={{borderColor:'white', borderWidth:1, width:100,height:30 ,marginTop:10, marginBottom:20,borderRadius:10, backgroundColor:'orange'}}>
+                        <Text style={{textAlign:"center",  textAlignVertical:"center", color:'white'}}>Register</Text>
                       </View>
                     </TouchableOpacity>
 

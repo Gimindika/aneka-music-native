@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
-import {  Button, Icon } from 'native-base';
+import {  Button, Icon, Text } from 'native-base';
 import { withNavigation } from 'react-navigation';
 
 
@@ -9,11 +9,10 @@ class LoginButton extends Component {
     this.props.navigation.navigate('LoginScreen');
   }
   
-
   render() {
     return (
-          <Button bordered warning  style={{width:40, height:40, borderRadius:10, margin:5, borderColor:'white', backgroundColor:'white'}} onPress={this.toLogin}>
-            <Icon name="person"  style={{width:40, height:40, padding:10}} />
+          <Button bordered warning  style={{width:100, height:40, borderRadius:10, margin:5, borderColor:'black', backgroundColor:'#F5D372', paddingTop:0, paddingBottom:0, paddingLeft:0, paddingRight:0}} onPress={this.toLogin}>
+            <Text style={{fontSize:20, color:"black"}}>LogIn</Text>
           </Button>
     );
   }

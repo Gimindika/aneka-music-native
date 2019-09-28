@@ -162,15 +162,15 @@ componentDidMount = async () => {
       return (
         <Fragment>
             <Card style={{marginBotton:0}}>      
-              <CardItem style ={{ paddingRight:0, paddingLeft:0}}>
-              <Image source={{uri: this.props.itemDetails.image }} style ={{width:width, height:height/3,marginLeft:0, paddingLeft:0, borderColor:'black', resizeMode:"contain"}}/>
+              <CardItem style ={{ paddingRight:0, paddingLeft:0,borderBottomColor:'orange', borderBottomWidth:1}}>
+              <Image source={{uri: this.props.itemDetails.image }} style ={{width:width, height:height/3.5,marginLeft:0, paddingLeft:0,  resizeMode:"contain"}}/>
               </CardItem>
             
             <ScrollView >
                 <CardItem style={{paddingBottom:0}}>
                   <Container style={{flex:4, paddingTop:0, paddingBottom:0, marginTop:0, width:width-50, margin:0,  flexDirection:"column"}}>
-                    <Text>{this.props.itemDetails.name}</Text>
-                    <Text>({this.props.itemDetails.category})</Text>
+                    <Text style ={{ fontSize:20, fontWeight:"900"}}>{this.props.itemDetails.name}</Text>
+                    <Text style ={{ fontSize:13, fontWeight:"200"}}>({this.props.itemDetails.category})</Text>
                     <Text></Text>
                     <Text>{this.props.itemDetails.description}</Text>
                   </Container>

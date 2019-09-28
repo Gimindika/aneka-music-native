@@ -3,7 +3,7 @@ import { Image, Text } from 'react-native';
 import {  Header,  Body, Right  } from 'native-base';
 
 import LoginButton from '../Elements/LoginButton';
-import LogoutButton from '../Elements/LogoutButton';
+import ProfileButton from '../Elements/ProfileButton';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -22,25 +22,19 @@ import AsyncStorage from '@react-native-community/async-storage'
   }
 
   componentDidMount =  () => {
-     AsyncStorage.getItem('id').then((value) => {
-      if (value !== null) {
-        value = parseInt(value);
-        this.setState({user:{...this.state.user, id:value}})
-      }
-    });
-  }
-
-  resetID = () => {
-    this.setState({user:{
-      id:null
-    }})
   }
   
   toHome = () => {
     this.props.navigation.navigate('CategoryScreen');
   }
-
+  
   render(){
+    AsyncStorage.getItem('id').then((value) => {
+     if (value !== null) {
+       value = parseInt(value);
+       this.setState({user:{...this.state.user, id:value}})
+     }
+   });
     return (
         <Header style={{backgroundColor:'#F5D372', alignItems:"flex-start"}} androidStatusBarColor='#F5C372'>
         
@@ -54,7 +48,7 @@ import AsyncStorage from '@react-native-community/async-storage'
           {this.props.user.id  ? 
             
             <TouchableOpacity>
-              <LogoutButton resetID={this.resetID}/>
+              <ProfileButton/>
             </TouchableOpacity>
             :
             <React.Fragment>
@@ -62,7 +56,7 @@ import AsyncStorage from '@react-native-community/async-storage'
                 <LoginButton/>  
                 : 
                 <TouchableOpacity>
-                  <LogoutButton resetID={this.resetID}/>
+                  <ProfileButton/>
                 </TouchableOpacity>
             }
             </React.Fragment>

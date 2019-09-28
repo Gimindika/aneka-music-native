@@ -31,7 +31,9 @@ class Wishlist extends React.Component {
               })}
             </React.Fragment>
             :
-            <Text>No item(s) in your wishlist</Text>
+            <View style={{flex:1,paddingTop:"50%", alignItems:"center"}}>
+              <Text style={{fontSize:20}}>No item(s) in your wishlist</Text>
+            </View>
             }
         </View>
       </ScrollView>
