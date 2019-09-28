@@ -1,7 +1,7 @@
 
 
 import React, {Fragment} from 'react';
-import {ScrollView, View, Text, Image, Dimensions} from 'react-native';
+import {ScrollView, View, Text, Dimensions, ToastAndroid} from 'react-native';
 // import ItemCard from '../Components/ItemCard';
 
 import {  Card, CardItem, Body, Spinner, Right } from "native-base";
@@ -12,12 +12,6 @@ import { connect } from 'react-redux';
 import { getCart, editCart, deleteCart, clearCart } from '../public/redux/actions/cart';
 import { newTransaction } from '../public/redux/actions/transactions';
 import AsyncStorage from '@react-native-community/async-storage'
-
-
-
-
-// import Cart from './Cart';
-
 
 class CartScreen extends React.Component {
   constructor(props){
@@ -106,7 +100,12 @@ componentDidMount = async () => {
     }
 
    await this.props.dispatch(newTransaction(this.state.user.id, data, this.state.header));
-    alert('Transaction success \n Recorded in transaction history')
+    ToastAndroid.showWithGravity(
+      'Transaction success \n Recorded in transaction history',
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+    );
+
     await this.setState({receipt:true})
     await this.props.dispatch(clearCart(this.state.user.id, this.state.header));
     this.setState({total:0});
@@ -147,14 +146,14 @@ componentDidMount = async () => {
                           <Body style={{flex:8,marginLeft:20, padding:20, flexDirection:"column"}}>
                               <CardItem style={{paddingBottom:10, paddingTop:0}}>
                               
-                                <Text>{item.item}</Text>
+                                <Text style={{fontSize:16}}>{item.item}</Text>
                               
                               </CardItem>
   
                               
                               <Fragment>
                                 <CardItem style={{paddingBottom:0, paddingTop:0}}>
-                                <Text>{item.branch}</Text>
+                                <Text style={{fontWeight:"200"}}>({item.branch})</Text>
                                 </CardItem>
               
                                 <CardItem style={{paddingBottom:0, paddingTop:0}}>
@@ -162,25 +161,25 @@ componentDidMount = async () => {
                                 </CardItem> 
   
                                 <CardItem style={{paddingBottom:0, paddingTop:0}}>
-                                <Text>Subtotal : Rp. {(item.price * item.quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
+                                <Text style={{fontSize:16}}>Subtotal : Rp. {(item.price * item.quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
                                 </CardItem> 
                               </Fragment>
                               
                             </Body>
   
-                          <Right style={{flex:2, flexWrap:"nowrap"}}>
+                          <Right style={{flex:2, flexWrap:"nowrap", justifyContent:'center'}}>
                             <Body>
                                 
                                 
                               <Fragment>
                                 <CardItem button onPress={() => {this.editQuantity(this.state.user.id, item.itemID, item.branchID, item.quantity+=1)}} style={{paddingBottom:0, flexWrap:"nowrap"}}>
-                                    <Text>+</Text>
+                                    <Text style={{fontSize:30, fontWeight:"600"}}>+</Text>
                                 </CardItem>
                                 
-                                <Text style={{paddingBottom:0, paddingTop:0,flexWrap:"nowrap"}}>{item.quantity}</Text>
+                                <Text style={{paddingBottom:0, paddingTop:0,flexWrap:"nowrap",fontSize:25, fontWeight:"600"}}>{item.quantity}</Text>
                                
                                 <CardItem button onPress={() => {this.editQuantity(this.state.user.id, item.itemID, item.branchID, item.quantity-=1)}} style={{paddingBottom:0, paddingTop:0,flexWrap:"nowrap"}}>
-                                    <Text>-</Text>
+                                    <Text style={{fontSize:30, fontWeight:"600"}}>-</Text>
                                 </CardItem>
                               </Fragment>
                                   
@@ -195,16 +194,26 @@ componentDidMount = async () => {
                     })}
                   </React.Fragment>
                   :   
-                  <Text>No item(s) in your cart</Text>
+                  <View style={{flex:1,paddingTop:"50%", alignItems:"center"}}>
+                    <Text style={{fontSize:20}}>No item(s) in your cart</Text>
+                    <TouchableOpacity 
+                    onPress={() => this.props.navigation.navigate('CategoryScreen')}>
+                      <Text style={{fontSize:20, color:'orange'}}>Tap here to Shop now!</Text>
+                    </TouchableOpacity>
+                  </View>
                   }
                 </View>
               </ScrollView>
               </React.Fragment>
   
-              <Text style={{fontSize:20, fontWeight:"600"}}>Total : Rp. {this.total().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>            
-              <TouchableOpacity>
-                      <Text style={{color:'white', backgroundColor:'orange', textAlign:"center", textAlignVertical:"center", height:40}} onPress={() => this.handleCheckout()}  >Checkout</Text>
-              </TouchableOpacity>
+              {this.props.cart.length? 
+              <Fragment>
+                <Text style={{fontSize:20, fontWeight:"600"}}>Total : Rp. {this.total().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>            
+                <TouchableOpacity>
+                        <Text style={{color:'white', backgroundColor:'orange', textAlign:"center", textAlignVertical:"center", height:40,fontSize:20, fontWeight:"600"}} onPress={() => this.handleCheckout()}  >Checkout</Text>
+                </TouchableOpacity>
+              </Fragment>
+              :null}
   
               <FooterComponent/>
           </Fragment>

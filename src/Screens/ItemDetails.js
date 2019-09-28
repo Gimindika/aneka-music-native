@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import {Image, Dimensions,  View, ScrollView} from 'react-native';
+import {Image, Dimensions,  ToastAndroid, ScrollView} from 'react-native';
 import {  Card, CardItem, Container,Text, Icon, Spinner } from "native-base";
 import { connect } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -85,12 +85,22 @@ componentDidMount = async () => {
             wishlist:this.props.wishlist,
             isWishlisted:true
         });
+        ToastAndroid.showWithGravity(
+          'The item is added to wishlist',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
     } else if(command == 'remove') { // eslint-disable-line
         await this.props.dispatch(deleteWishlist(user, item, this.state.header));
         await this.setState({
             wishlist:this.props.wishlist,
             isWishlisted:false
         });
+        ToastAndroid.showWithGravity(
+          'The item is removed from wishlist',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
     }
   }
 
@@ -123,9 +133,18 @@ componentDidMount = async () => {
             isAddedtoCart:true
         });
         
-        alert('Item has been added to cart.');
+        ToastAndroid.showWithGravity(
+          'Item has been added to cart.',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
+      
     } else {
-        alert('The item is ready, go to checkout.');
+        ToastAndroid.showWithGravity(
+          'The item is ready, go to checkout.',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
         this.setState({isAddedtoCart:false});
     }
   }
@@ -208,7 +227,7 @@ componentDidMount = async () => {
                       </Container>
                     </Fragment>
                   
-                    :alert('error itemstock not loaded')}
+                    :null}
                     
                 </CardItem>
             </ScrollView>

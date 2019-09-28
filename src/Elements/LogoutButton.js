@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native';
+import { ToastAndroid } from 'react-native';
 import {  Button, Icon } from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage'
 import { withNavigation } from 'react-navigation';
@@ -24,8 +24,14 @@ class LogoutButton extends Component {
     this.props.dispatch(logout());
     this.props.dispatch(resetWishlist());
     this.props.dispatch(resetCart());
+
+    ToastAndroid.showWithGravity(
+      'Logout Success',
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+    );
+
     this.props.navigation.navigate('CategoryScreen');
-    alert('Logout Success')
   }
 
   render() {

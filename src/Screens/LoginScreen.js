@@ -1,7 +1,7 @@
 
 
 import React, {Fragment} from 'react';
-import { Text,  View, TextInput, Image} from 'react-native';
+import { Text,  View, TextInput, Image, ToastAndroid} from 'react-native';
 import { Container, Spinner} from 'native-base';
 import HeaderComponent  from '../Components/HeaderComponent';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -57,7 +57,6 @@ class LoginScreen extends React.Component {
     if(this.state.email != '' && this.state.password != ''){
       
       await this.props.dispatch(login(data));
-      alert(this.props.userLoading)
       if(this.props.userLoading){
         return(
           <Fragment>
@@ -98,16 +97,27 @@ class LoginScreen extends React.Component {
           });
           
           
-            
-          alert ('Welcome ' + this.state.user.name)
+          ToastAndroid.showWithGravity(
+            'Log in success.\nWelcome ' + this.state.user.name,
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+          );
+          setInterval(() => {
+            this.props.navigation.navigate('CategoryScreen'); 
+        }, 800);
         
-          this.props.navigation.navigate('CategoryScreen');
+          
         }
 
       }
 
     } else {
-      alert('Email and password can\'t be empty');
+      ToastAndroid.showWithGravity(
+        'Email and password can\'t be empty',
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+      );
+    
     }
   } 
 

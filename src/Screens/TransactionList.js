@@ -1,31 +1,31 @@
 
-import React from 'react';
-import {ScrollView, View} from 'react-native';
+// import React from 'react';
+// import {ScrollView, View} from 'react-native';
 
-import TransactionCard from '../Components/TransactionCard';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+// import TransactionCard from '../Components/TransactionCard';
+// import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default class TransactionList extends React.Component {
+// export default class TransactionList extends React.Component {
   
 
-  render() {
+//   render() {
     
-    return (
-      <React.Fragment>
-      <ScrollView style={{flex:1, }}>
-        <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
+//     return (
+//       <React.Fragment>
+//       <ScrollView style={{flex:1, }}>
+//         <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
           
             
-                {/* <TransactionCard/>
+//                 {/* <TransactionCard/>
               
-                <TransactionCard/>
-              */}
+//                 <TransactionCard/>
+//               */}
             
-        </View>
-      </ScrollView>
-      </React.Fragment>
-    );
-  }
+//         </View>
+//       </ScrollView>
+//       </React.Fragment>
+//     );
+//   }
   
-};
+// };
 

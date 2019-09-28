@@ -1,8 +1,8 @@
 
 
 import React, {Fragment} from 'react';
-import { Text,  View, TextInput, Image} from 'react-native';
-import { Container, Content, Item } from 'native-base';
+import { Text,  View, TextInput, Image, ToastAndroid} from 'react-native';
+import { Container } from 'native-base';
 import HeaderComponent  from '../Components/HeaderComponent';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
@@ -39,9 +39,18 @@ class RegisterScreen extends React.Component {
     this.setState({register:this.props.register})
 
     if(this.state.register.error){
-      alert(this.state.register.error)
+      ToastAndroid.showWithGravity(
+        this.state.register.error,
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
+   
     } else {
-      alert('Register success. \n Welcome to Aneka Music');
+      ToastAndroid.showWithGravity(
+        'Register success. \n Welcome to Aneka Music',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
       this.props.navigation.navigate('CategoryScreen');
     }
   } 
